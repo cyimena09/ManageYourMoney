@@ -1,5 +1,5 @@
 <!-- Container-->
-  <div class="graph_and_button" style="min-height: 270px ; max-height: 270px">
+  <div class="graph_and_button" style="min-height: 310px ; max-height: 310px">
 
     <!-- Card -->
         <div class="card text-white bg-danger" style="width: 100%">
@@ -20,11 +20,13 @@
           <!-- End banner card-->
 
           <!-- Body Card -->
+          <div>Avril : <strong style="color: #620c0c">126 €</strong> | 50% de plus que le mois précédent</div>
+          <div>Moyenne : <strong style="color: #104710">450 € </strong>par mois</div>
             <div [ngClass]="{'card-body': !activated,
                              'card-body mt-0': activated}">
               <div  id="graph">
                 <!-- Body linear chart -->
-                    <div *ngIf="activated"><canvas id="expenses_graph" width="690" height="180px" ></canvas></div>
+                    <div><canvas id="expenses_graph" width="690" height="180px" ></canvas></div>
                 <!-- End body linear chart -->
 
                 <!-- Body doughnut chart -->
@@ -41,8 +43,6 @@
 
 <!-- Footer card -->
           <div class="card-footer bg-danger">
-            <div class="footer">Avril : <strong style="color: #620c0c">126 €</strong> | 50% de plus que le mois précédent</div>
-            <p class="footer">Moyenne : <strong style="color: #104710">450 € </strong>par mois</p>
             <p class="footer" id="total">TOTAL : <strong>1500 €</strong> </p>
           </div>
           <!-- End footer card -->
@@ -84,20 +84,3 @@
     </form>
 <!-- End second form -->
 
-
-<!-- Analysis -->
-    <div class="card border-success mb-3 mt-4" >
-      <div class="card-header">Analyse</div>
-      <div class="card-body text-success">
-        <p>mes projet , cadre , photo du site , description hover sur limage</p>
-        <p>utiliser un Subject</p>
-        <p class="card-text">Mettre un header rouge ou vert en cas de bon resultat . FUsionner les deux analyses ? Vos revenus ont baissé de x % par rapport au mois passé</p>
-            <p>si on encode des données d'un mois pas encore passé ca bug donc ne pas diviser par le mois en cours mais le mois le plus loitain</p>
-        <p>Dépense moyen :  <strong>{{averageByMonth | currency:'EUR'}}</strong> par mois | <strong>{{expensesByDay | currency:'EUR'}} </strong>par jour</p>
-            <p>ce mois ci vous etes à {{expenseThisMonth | currency}} euros</p>
-            <p *ngIf="averageDiff < 0">la moyenne a été dépassé de {{absAverageDiff | currency:'EUR'}} euros</p>
-            <p *ngIf="averageDiff > 0">félicitation vous etes en dessous de la moyenne. Dépensez au maximum xxx euros pour rester en dessous de la moyenne</p>
-          <p>total des dépenses : {{totalExpenses | currency:'EUR'}} </p>
-      </div>
-    </div>
-<!-- End analysis -->

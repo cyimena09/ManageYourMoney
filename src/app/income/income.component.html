@@ -1,18 +1,55 @@
+<!-- Container-->
+  <div class="graph_and_button" style="min-height: 310px ; max-height: 310px">
+
+    <!-- Card -->
+        <div class="card text-white bg-success" style="width: 100%">
+          <!-- Banner card-->
+          <div class="banner card-header">
 
 
-<div class="graph_and_button">
-    <!-- Income graph -->
-        <div class="card text-white bg-success mb-3">
-          <div class="card-header">Revenus</div>
-          <div class="card-body">
-            <div id="graph">
-                <canvas id="incomes_graph" width="670" height="200px" ></canvas>
-            </div>
+          <div class="title">
+            <div >Revenus </div>
+            <a *ngIf="activated" routerLink="" title="Revenus par catégorie" (click)="onActivated()">
+              <span class="fas fa-chart-pie" style="color: white"></span></a>
+            <a *ngIf="!activated" routerLink="" title="Revenus par mois" (click)="onActivated()">
+              <span class="fas fa-chart-line" style="color: white"></span></a>
           </div>
+
+
+          </div>
+          <!-- End banner card-->
+
+          <!-- Body Card -->
+
+          <div>Avril : <strong style="color: #620c0c">126 €</strong> | 50% de plus que le mois précédent</div>
+            <div>Moyenne : <strong style="color: #104710">450 € </strong>par mois</div>
+
+
+            <div [ngClass]="{'card-body': !activated,
+                             'card-body mt-0': activated}">
+              <div  id="graph">
+                <!-- Body linear chart -->
+                    <div><canvas id="incomes_graph" width="690" height="180px" ></canvas></div>
+                <!-- End body linear chart -->
+
+                <!-- Body doughnut chart -->
+                    <app-categorie-income *ngIf="!activated"></app-categorie-income>
+                <!-- End body doughnut chart -->
+              </div>
+            </div>
+          <!-- End Body card -->
         </div>
-    <!-- End graph -->
-  <div><button class="btn btn-primary ml-2" title="Dépenses par catégorie"><span class="fas fa-chart-pie"></span></button></div>
-</div>
+    <!-- End card -->
+
+  </div>
+<!-- End container -->
+
+<!-- Footer card -->
+          <div class="card-footer bg-success">
+
+            <p class="footer" id="total">TOTAL : <strong>1500 €</strong> </p>
+          </div>
+          <!-- End footer card -->
 
 
 <!-- Main Form  -->
@@ -51,24 +88,3 @@
       </div>
     </form>
 <!-- End add new category -->
-
-
-<!-- Analysis -->
-    <div class="card border-success mb-3 mt-4" >
-      <div class="card-header">période du </div>
-      <div class="card-body text-success">
-        <h2>AJouter un bouton détail dans lequel on mettra les anticipations , taux de croissance et plein d'autres choses(solde, dépense, revenu)</h2>
-        <h3>fleche pour basculer le graph en dépense par categorie ou revenu par categorie mettre une icone graph ou tarte en fonction d'ou on est</h3>
-        <h2>Période du  au  ...  </h2>
-        <p>utiliser un Subject</p>
-        <p class="card-text">Mettre un header rouge ou vert en cas de bon resultat . FUsionner les deux analyses ? Vos revenus ont baissé de x % par rapport au mois passé</p>
-            <p>Revenu moyen :  <strong>{{averageByMonth | currency:'EUR'}}</strong> par mois | <strong>{{incomesByDay | currency:'EUR'}} </strong>par jour</p>
-            <p>ce mois ci vous etes à {{incomesThisMonth | currency}} euros</p>
-            <p *ngIf="averageDiff < 0">la moyenne a été dépassé de {{absAverageDiff | currency:'EUR'}} euros</p>
-            <p *ngIf="averageDiff > 0">félicitation vous etes en dessous de la moyenne. Dépensez au maximum xxx euros pour rester en dessous de la moyenne</p>
-          <p>total des dépenses : {{totalIncomes | currency:'EUR'}} </p>
-      </div>
-    </div>
-<!-- End analysis -->
-
-  <app-categorie-income></app-categorie-income>

@@ -3,3 +3,64 @@
 span{
   color: #343499;
 }
+
+.graph_and_button{
+  margin-bottom: -10px;
+  display: flex;
+}
+
+#main_form{
+  margin-top: 15px;
+  display: flex;
+}
+
+.input_main, select{
+  margin-right: 15px;
+}
+
+.title{
+  display: flex;
+  justify-content: space-between;
+  color: #e3dada;
+}
+
+.card-footer{
+  margin-top: 20px;
+  color: white;
+  border-radius: 3px;
+  margin-bottom: 10px;
+  padding-bottom: 3px;
+}
+
+
+.footer{
+  color: white;
+}
+
+
+#total {
+  border-top: solid white 0.1px;
+  padding-top: 3px;
+}
+
+
+//categorie
+
+#categorie{
+  padding: 10px;
+  border: solid 1px silver;
+  background-color: rgb(231, 229, 229,0.1);}
+
+.banner_subtitle{
+  position: relative;
+  right: 10px;
+  bottom: 5px;
+  width: 898px;
+  background-color: rgb(43,43,43,0.9);
+  color: white;
+  padding: 2px 0 2px 10px;
+}
+
+#graph{
+  width: 700px;
+}

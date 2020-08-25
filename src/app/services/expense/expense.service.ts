@@ -29,6 +29,10 @@ export class ExpenseService {
     );
   }
 
+  getExpensesByCategorie(){
+    return this.httpClient.get(this.apiURL + '1/' + 'expensesbycategorie')
+  }
+
   addExpense(newExpense){
     return this.httpClient.post(this.apiURL, newExpense).subscribe(
       () => {this.loadExpenses()}
@@ -52,52 +56,6 @@ export class ExpenseService {
     return this.httpClient.get(this.apiURL + '1/'  + 'categories')
   }
 
-
-  getCategorieForChart(){
-    const categorieTable = [];
-    const nbData = this.userService.user.expenses.length;
-    for (let i = 0; i< nbData; i++){
-      const cat = this.userService.user.expenses[i].categorie
-      if (!categorieTable.includes(cat)){
-        categorieTable.push(cat)
-      }
-    }
-    return categorieTable
-  }
-
-  getCategorieForEncoding(){
-    return this.userService.user.expenseCategories
-  }
-
-  getExpenseByCategorie(){
-    // retourne un dictionnaire avec en clé la catégorie et en valeur le total des dépenses de cette catégorie
-    const listCategorie = this.getCategorieForChart();
-    const dict = {};
-    const nbData = this.userService.user.expenses.length;
-    listCategorie.forEach(
-      (element) => {
-        let sums = 0;
-        for (let i = 0; i < nbData; i++){
-          if (element === this.userService.user.expenses[i].categorie ){
-            sums += this.userService.user.expenses[i].amount
-          }
-        }
-        dict[element] = sums
-      }
-    );
-    return dict
-  }
-
-
-  getDataExpensesForChart(){
-    // retourne un tableau de taille 12 colonnes avec toutes les dépenses pour un an
-    const dataTable = [];
-    for (let i = 0; i< 12; i++){
-      const amount = this.getExpensesForOneMonth(i)
-      dataTable.push(amount)
-    }
-    return dataTable
-  }
 
   getExpensesForOneMonth(month){
     // on a d'abord besoin de récupérer tous les mois concernés

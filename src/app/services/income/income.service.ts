@@ -28,6 +28,10 @@ export class IncomeService {
       );
   }
 
+  getIncomesByCategorie(){
+    return this.httpClient.get(this.apiURL + '1/' + 'incomesbycategorie')
+  }
+
   addIncome(newIncome){
     return this.httpClient.post(this.apiURL, newIncome).subscribe(
       () => {this.loadIncomes()}
@@ -51,36 +55,6 @@ export class IncomeService {
     return this.httpClient.get(this.apiURL + '1/'  + 'categories')
   }
 
-  getCategorieForChart(){
-    const categorieTable = [];
-    const nbData = this.userService.user.incomes.length;
-    for (let i = 0; i< nbData; i++){
-      const cat = this.userService.user.incomes[i].categorie
-      if (!categorieTable.includes(cat)){
-        categorieTable.push(cat)
-      }
-    }
-    return categorieTable
-  }
-
-  getIncomesByCategorie(){
-    // retourne un dictionnaire avec en clé la catégorie et en valeur le total des dépenses de cette catégorie
-    const listCategorie = this.getCategorieForChart();
-    const dict = {};
-    const nbData = this.userService.user.incomes.length;
-    listCategorie.forEach(
-      (element) => {
-        let sums = 0;
-        for (let i = 0; i < nbData; i++){
-          if (element === this.userService.user.incomes[i].categorie ){
-            sums += this.userService.user.incomes[i].amount
-          }
-        }
-        dict[element] = sums
-      }
-    );
-    return dict
-  }
 
   getDataIncomesForChart(){
     // retourne un tableau de taille 12 colonnes avec toutes les dépenses pour un an

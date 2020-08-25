@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {ExpenseService} from '../../services/expense/expense.service';
 import Chart from 'chart.js'
 import 'chartjs-plugin-labels';
-import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-categorie-expense',
@@ -10,42 +9,41 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./categorie-expense.component.scss']
 })
 export class CategorieExpenseComponent implements OnInit {
-
- canvas;
-  ctx;
-  myChartData;
-  categorie = [];
+  expenses;
+  categories = [];
   dataForCategorie = [];
 
-  test
+  canvas;
+  ctx;
+  myChartData;
 
-  subscription: Subscription
 
   constructor(private expenseService: ExpenseService) {}
 
-  ngOnDestroy(){
-    this.subscription.unsubscribe();
-  }
-
   ngOnInit(): void {
-   // setTimeout(
-    //  () => {this.getDataAndLabel(); this.loadChart();}
-    //);
+    this.expenseService.getExpensesByCategorie().subscribe(
+      (data) => {this.expenses = data; this.getCategorie(); this.getDataForCategorie(); this.loadChart()}
+    );
   }
 
-  getDataAndLabel(){
-    const dict = this.expenseService.getExpenseByCategorie()
-    for (let key in dict ){
-      this.categorie.push(key)
-      this.dataForCategorie.push(dict[key])
+  getCategorie(){
+    const nbcat = this.expenses.length;
+    for(let i = 0; i < nbcat; i++){
+      this.categories.push(this.expenses[i].categorie)
     }
-    return this.expenseService.getCategorieForChart();
+  }
+
+  getDataForCategorie(){
+    const nbcat = this.expenses.length;
+    for(let i = 0; i < nbcat; i++){
+      this.dataForCategorie.push(this.expenses[i].amount)
+    }
   }
 
   getRandomColor(){
     // retourne un tableau de couleur pour les appliquer aux différentes catégorie
     const colorTable = []
-    for (let i = 0; i< this.categorie.length; i++){
+    for (let i = 0; i< this.categories.length; i++){
       const color = '#'+(Math.random()*0xFFFFFF<<0).toString(16)
       colorTable.push(color)
     }
@@ -55,13 +53,11 @@ export class CategorieExpenseComponent implements OnInit {
   loadChart(){
     this.canvas = document.getElementById("categorieExpensePie")
     this.ctx = this.canvas.getContext("2d");
-    this.ctx.font = '50px serif'
-    this.ctx.fillText('coucou', 50,90)
 
     const config = {
       type: 'doughnut',
       data: {
-        labels: this.categorie,
+        labels: this.categories,
         datasets : [{
           data: this.dataForCategorie,
           backgroundColor: this.getRandomColor()

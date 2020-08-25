@@ -4,7 +4,6 @@ import {NgForm} from '@angular/forms';
 import {Income} from '../models/income';
 import {UserService} from '../services/user/user.service';
 import {IncomeService} from '../services/income/income.service';
-import {Expense} from '../models/expense';
 
 @Component({
   selector: 'app-income',
@@ -12,6 +11,7 @@ import {Expense} from '../models/expense';
   styleUrls: ['./income.component.scss']
 })
 export class IncomeComponent implements OnInit {
+  activated = true
 
   incomes
   years
@@ -48,6 +48,16 @@ export class IncomeComponent implements OnInit {
     this.incomeService.getCategories().subscribe(
       (data) => {this.categories = data;}
     );
+  }
+
+  onActivated(){
+    if(this.activated){
+      document.getElementById('incomes_graph').style.display = 'none';
+    }
+    else {
+      document.getElementById('incomes_graph').style.display = 'block';
+    }
+    this.activated = !this.activated
   }
 
   getDataSets(){

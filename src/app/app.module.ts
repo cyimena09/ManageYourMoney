@@ -10,11 +10,7 @@ import {IncomeComponent} from './income/income.component';
 import { SoldeComponent } from './solde/solde.component';
 import { CategorieIncomeComponent } from './income/categorie-income/categorie-income.component';
 import { CategorieExpenseComponent } from './expense/categorie-expense/categorie-expense.component';
-import { TestComponent } from './test/test.component';
 import { HistoriqueComponent } from './historique/historique.component';
-import { ComparateurComponent } from './comparateur/comparateur.component';
-import { LocalisationComponent } from './localisation/localisation.component';
-import {GoogleMapsModule} from '@angular/google-maps';
 
 @NgModule({
   declarations: [
@@ -24,17 +20,13 @@ import {GoogleMapsModule} from '@angular/google-maps';
     SoldeComponent,
     CategorieIncomeComponent,
     CategorieExpenseComponent,
-    TestComponent,
     HistoriqueComponent,
-    ComparateurComponent,
-    LocalisationComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule,
-    GoogleMapsModule
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

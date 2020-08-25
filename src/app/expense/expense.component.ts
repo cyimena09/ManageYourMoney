@@ -30,7 +30,7 @@ export class ExpenseComponent implements OnInit {
   averageByMonth;
   averageDiff;
   absAverageDiff;
-  dataIncomesForChart: any = []
+  dataIncomesForChart;
 
   // graph parameter
   canvas:any;
@@ -51,6 +51,12 @@ export class ExpenseComponent implements OnInit {
   }
 
   onActivated(){
+    if(this.activated){
+      document.getElementById('expenses_graph').style.display = 'none';
+    }
+    else {
+      document.getElementById('expenses_graph').style.display = 'block';
+    }
     this.activated = !this.activated
   }
 
