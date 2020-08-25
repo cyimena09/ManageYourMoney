@@ -1,0 +1,103 @@
+<!-- Container-->
+  <div class="graph_and_button" style="min-height: 270px ; max-height: 270px">
+
+    <!-- Card -->
+        <div class="card text-white bg-danger" style="width: 100%">
+          <!-- Banner card-->
+          <div class="banner card-header">
+
+
+          <div class="title">
+            <div >Dépenses </div>
+            <a *ngIf="activated" routerLink="" title="Dépenses par catégorie" (click)="onActivated()">
+              <span class="fas fa-chart-pie" style="color: white"></span></a>
+            <a *ngIf="!activated" routerLink="" title="Dépenses par mois" (click)="onActivated()">
+              <span class="fas fa-chart-line" style="color: white"></span></a>
+          </div>
+
+
+          </div>
+          <!-- End banner card-->
+
+          <!-- Body Card -->
+            <div [ngClass]="{'card-body': !activated,
+                             'card-body mt-0': activated}">
+              <div  id="graph">
+                <!-- Body linear chart -->
+                    <div *ngIf="activated"><canvas id="expenses_graph" width="690" height="180px" ></canvas></div>
+                <!-- End body linear chart -->
+
+                <!-- Body doughnut chart -->
+                    <app-categorie-expense *ngIf="!activated"></app-categorie-expense>
+                <!-- End body doughnut chart -->
+              </div>
+            </div>
+          <!-- End Body card -->
+        </div>
+    <!-- End card -->
+
+  </div>
+<!-- End container -->
+
+<!-- Footer card -->
+          <div class="card-footer bg-danger">
+            <div class="footer">Avril : <strong style="color: #620c0c">126 €</strong> | 50% de plus que le mois précédent</div>
+            <p class="footer">Moyenne : <strong style="color: #104710">450 € </strong>par mois</p>
+            <p class="footer" id="total">TOTAL : <strong>1500 €</strong> </p>
+          </div>
+          <!-- End footer card -->
+
+
+<!-- Expense main encoding form -->
+    <form id="main_form" (ngSubmit)="onAddExpense(f)" #f="ngForm">
+        <div class="input-group">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">€</div>
+                  </div>
+                  <input class="form-control input_main" type="text" placeholder="Montant" id="amount" name="amount" ngModel required>
+      </div>
+
+      <!-- Categories -->
+      <select id="categories" class="form-control" name="categorie" ngModel required>
+                  <option value="" disabled selected hidden>Catégorie</option>
+                  <option style="background-color: rgb(89,169,255); color: aliceblue" (click)="onAddCategorie()">Nouveau</option>
+                  <option *ngFor="let cat of categories" >{{cat}}</option>
+                </select>
+      <!-- End categories -->
+
+      <!-- Encoding date -->
+          <input class="form-control input_main" type="Date" id="date" name="date"  ngModel="{{actualDate | date:'yyyy-MM-dd'}}">
+          <button class="btn btn-primary" type="submit" >Ajouter</button>
+    </form>
+<!-- End main form -->
+
+
+<!-- Second form add new categorie -->
+    <form id="newCat" *ngIf="newCategorie" (ngSubmit)="onSaveCategorie(g)" #g="ngForm" >
+      <div  class="input-group mb-2 mr-sm-2">
+          <input class="form-control" name="categorie" type="text" placeholder="Catégorie" ngModel required>
+          <div class="input-group-prepend">
+            <button class="btn btn-success" type="submit" [disabled]="g.invalid">+</button>
+          </div>
+        <button class="btn btn-danger ml-2 btn-sm" (click)="onAddCategorie()">Terminer</button>
+      </div>
+    </form>
+<!-- End second form -->
+
+
+<!-- Analysis -->
+    <div class="card border-success mb-3 mt-4" >
+      <div class="card-header">Analyse</div>
+      <div class="card-body text-success">
+        <p>mes projet , cadre , photo du site , description hover sur limage</p>
+        <p>utiliser un Subject</p>
+        <p class="card-text">Mettre un header rouge ou vert en cas de bon resultat . FUsionner les deux analyses ? Vos revenus ont baissé de x % par rapport au mois passé</p>
+            <p>si on encode des données d'un mois pas encore passé ca bug donc ne pas diviser par le mois en cours mais le mois le plus loitain</p>
+        <p>Dépense moyen :  <strong>{{averageByMonth | currency:'EUR'}}</strong> par mois | <strong>{{expensesByDay | currency:'EUR'}} </strong>par jour</p>
+            <p>ce mois ci vous etes à {{expenseThisMonth | currency}} euros</p>
+            <p *ngIf="averageDiff < 0">la moyenne a été dépassé de {{absAverageDiff | currency:'EUR'}} euros</p>
+            <p *ngIf="averageDiff > 0">félicitation vous etes en dessous de la moyenne. Dépensez au maximum xxx euros pour rester en dessous de la moyenne</p>
+          <p>total des dépenses : {{totalExpenses | currency:'EUR'}} </p>
+      </div>
+    </div>
+<!-- End analysis -->
