@@ -10,7 +10,7 @@ import {IncomeComponent} from './income/income.component';
 import { SoldeComponent } from './solde/solde.component';
 import { CategorieIncomeComponent } from './income/categorie-income/categorie-income.component';
 import { CategorieExpenseComponent } from './expense/categorie-expense/categorie-expense.component';
-import { HistoriqueComponent } from './historique/historique.component';
+import { HistoricComponent } from './historic/historic.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,7 @@ import { HistoriqueComponent } from './historique/historique.component';
     SoldeComponent,
     CategorieIncomeComponent,
     CategorieExpenseComponent,
-    HistoriqueComponent,
+    HistoricComponent,
   ],
   imports: [
     BrowserModule,

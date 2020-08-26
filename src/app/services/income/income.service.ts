@@ -7,14 +7,17 @@ import {HttpClient} from '@angular/common/http';
   providedIn: 'root'
 })
 export class IncomeService {
-
-  incomes
+  incomes;
+  total;
+  totalthismonth;
   incomeSubject = new Subject();
+  totalSubject = new Subject();
+  totalthismonthSubject = new Subject();
+
   apiURL = 'https://localhost:44390/api/incomes/user/'
 
-
   constructor(private userService: UserService, private httpClient: HttpClient) {
-    this.loadIncomes()
+    this.loadIncomes();
   }
 
   loadIncomes(){
@@ -24,18 +27,17 @@ export class IncomeService {
         this.incomeSubject.next(this.incomes);
         this.getYears();
         this.getCategories();
-      }
-      );
+        this.getTotal();
+        this.getTotalThisMonth();
+      });
+  }
+
+  getIncomesList(){
+    return this.httpClient.get(this.apiURL + '1/' + 'incomes')
   }
 
   getIncomesByCategorie(){
     return this.httpClient.get(this.apiURL + '1/' + 'incomesbycategorie')
-  }
-
-  addIncome(newIncome){
-    return this.httpClient.post(this.apiURL, newIncome).subscribe(
-      () => {this.loadIncomes()}
-      );
   }
 
   getYears(){
@@ -52,94 +54,38 @@ export class IncomeService {
   }
 
   getCategories(){
-    return this.httpClient.get(this.apiURL + '1/'  + 'categories')
+    return this.httpClient.get(this.apiURL + '1/'  + 'categories');
   }
 
-
-  getDataIncomesForChart(){
-    // retourne un tableau de taille 12 colonnes avec toutes les dépenses pour un an
-    const dataTable = []
-    for (let i = 0; i< 12; i++){
-      const amount = this.getIncomesForOneMonth(i)
-      dataTable.push(amount)
-    }
-    return dataTable
+    getTotal(){
+    return this.httpClient.get(this.apiURL + '1/' + 'total').subscribe(
+      (data) => {this.total = data; this.totalSubject.next(this.total)}
+    );
   }
 
-  getIncomesForOneMonth(month){
-    // on a d'abord besoin de récupérer tous les mois concernés
-    let sums = 0;
-    const nbData = this.userService.user.incomes.length
-    for (let i = 0;i < nbData; i++){
-      let apiDate = new Date(this.userService.user.incomes[i].date)
-      const apiMonth = apiDate.getMonth();
-      if (apiMonth === month){
-        sums += this.userService.user.incomes[i].amount
-      }
-    }
-    return sums
+  getTotalThisMonth(){
+    return this.httpClient.get(this.apiURL + '1/' + 'totalthismonth').subscribe(
+      (data) => {this.totalthismonth = data; this.totalthismonthSubject.next(this.totalthismonth)}
+    )
   }
 
-  totalIncomes(){
-    let sums = 0;
-    const nb = this.userService.user.incomes.length
-    for (let i = 0; i < nb; i++){
-      sums += this.userService.user.incomes[i].amount
-    }
-    return sums
+  addIncome(newIncome){
+    const date = new Date().getMonth()
+    this.httpClient.post(this.apiURL, newIncome).subscribe(
+      () => {
+        this.loadIncomes();
+        this.total += newIncome.amount;
+        this.totalSubject.next(this.total)
+
+        if(date === newIncome.date.getMonth()){
+          this.totalthismonth += newIncome.amount;
+          this.totalthismonthSubject.next(this.totalthismonth)
+        }
+      });
   }
 
-  getOldestDate(){
-    // retourne la date la différence entre la date la plus ancienne et le 1/1/1970
-    let oldestDate = new Date().valueOf();
-    const nb = this.userService.user.incomes.length
-    for (let i = 0; i < nb; i++){
-      let datetime = new Date(this.userService.user.incomes[i].date)
-      let dateTest = datetime.valueOf()
-      if(dateTest < oldestDate){
-        oldestDate = dateTest
-      }
-    }
-    return  oldestDate;
+  removeIncome(incomeid){
+    return this.httpClient.delete(this.apiURL + incomeid)
   }
 
-  spentDay(){
-    // cette fonction retourne le nombre de jour passé depuis la première dépense
-    const oldestDate = this.getOldestDate();
-    const actualDate = new Date().valueOf();
-
-    return Math.round((actualDate - oldestDate) / 86400000);
-  }
-
-  spentMonth(){
-    // cette fonction retourne le nombre de mois passé depuis la première dépense
-    return this.spentDay() / 30.41; // gérer la division en fonction du mois
-  }
-
-  getAverageByDay() {
-    return this.totalIncomes() / this.spentDay();
-  }
-
-  getAverageByMonth(){
-    return this.totalIncomes()/ this.spentMonth();
-  }
-
-  getAverageThisMonth(){
-    const nbDay = new Date().getDay();
-    return this.getIncomesThisMonth()/nbDay;
-  }
-
-  getIncomesLastMonth(){
-    const lastMonth = new Date().getMonth() - 1;
-    return this.getIncomesForOneMonth(lastMonth);
-  }
-
-  getIncomesThisMonth(){
-    const thisMonth = new Date().getMonth();
-    return this.getIncomesForOneMonth(thisMonth);
-  }
-
-  getAverageDiff(){
-    return this.getAverageByMonth() - this.getAverageThisMonth();
-  }
 }

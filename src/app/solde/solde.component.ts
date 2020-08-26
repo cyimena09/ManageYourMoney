@@ -21,6 +21,7 @@ export class SoldeComponent implements OnInit {
   constructor(private soldeService: SoldeService, private incomeService: IncomeService, private expenseService: ExpenseService) { }
 
   ngOnInit(): void {
+    this.canvas = document.getElementById("solde_graph");
     this.incomes = this.incomeService.incomes;
     this.expenses = this.expenseService.expenses;
     this.incomeService.incomeSubject.subscribe(
@@ -29,6 +30,10 @@ export class SoldeComponent implements OnInit {
     this.expenseService.expenseSubject.subscribe(
       (data) => {this.expenses = data;  this.loadData() }
     );
+
+    if(typeof this.incomes !== 'undefined' && this.expenses !== 'undefined'  ){
+      this.loadData();
+    }
   }
 
   loadData(){
@@ -46,6 +51,8 @@ export class SoldeComponent implements OnInit {
 
       this.getDataSets();
       this.loadChart();
+
+
     }
   }
 
@@ -101,8 +108,6 @@ export class SoldeComponent implements OnInit {
   }
 
   loadChart(){
-
-    this.canvas = document.getElementById("solde_graph");
     this.ctx = this.canvas.getContext("2d")
 
     const month_labels = ["JANVIER", "FÉVRIER", "MARS", "AVRIL", "MAI", "JUIN", "JUILLET", "AOUT", "SEPTEMBRE", "OCTOBRE", "NOVEMBRE", "DÉCEMBRE"]

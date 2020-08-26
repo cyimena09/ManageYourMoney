@@ -20,7 +20,7 @@
           <!-- End banner card-->
 
           <!-- Body Card -->
-          <div>Avril : <strong style="color: #620c0c">126 €</strong> | 50% de plus que le mois précédent</div>
+          <div>Avril : <strong style="color: #620c0c">{{totalthismonth}}€</strong> | 50% de plus que le mois précédent</div>
           <div>Moyenne : <strong style="color: #104710">450 € </strong>par mois</div>
             <div [ngClass]="{'card-body': !activated,
                              'card-body mt-0': activated}">
@@ -43,7 +43,7 @@
 
 <!-- Footer card -->
           <div class="card-footer bg-danger">
-            <p class="footer" id="total">TOTAL : <strong>1500 €</strong> </p>
+            <p class="footer" id="total">TOTAL : <strong>{{total}} €</strong> </p>
           </div>
           <!-- End footer card -->
 

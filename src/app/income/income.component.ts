@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import Chart from 'chart.js';
 import {NgForm} from '@angular/forms';
 import {Income} from '../models/income';
@@ -11,26 +11,14 @@ import {IncomeService} from '../services/income/income.service';
   styleUrls: ['./income.component.scss']
 })
 export class IncomeComponent implements OnInit {
-  activated = true
-
-  incomes
-  years
-  categories
-  //instancier income dans le component pour ne pas sy souscrire 10fois
-
-  @Output() updateSolde = new EventEmitter();
-
+  activated = true;
+  incomes;
+  years;
+  categories;
+  totalthismonth;
+  total;
   actualDate = Date.now();
-  totalIncomes: number;
-  incomesByDay;
-  incomesThisMonth;
-  incomesLastMont;
-  averageByMonth;
-  averageDiff;
-  absAverageDiff;
-  categorie;
   newCategorie: boolean;
-  dataIncomesForChart: any = [];
 
   // graph parameter
   canvas:any;
@@ -40,7 +28,10 @@ export class IncomeComponent implements OnInit {
   constructor(private userService: UserService, private incomeService: IncomeService) { }
 
   ngOnInit(): void {
+    this.canvas = document.getElementById("incomes_graph");
     this.incomes = this.incomeService.incomes;
+    this.total = this.incomeService.total;
+    this.totalthismonth = this.incomeService.totalthismonth
     this.incomeService.incomeSubject.subscribe(
       (data) => {this.incomes = data; this.years = this.incomeService.getYears(); this.getDataSets(); this.loadChart();}
     );
@@ -48,6 +39,20 @@ export class IncomeComponent implements OnInit {
     this.incomeService.getCategories().subscribe(
       (data) => {this.categories = data;}
     );
+
+   this.incomeService.totalSubject.subscribe(
+      (data) => this.total = data
+    )
+
+    this.incomeService.totalthismonthSubject.subscribe(
+      (data) => this.totalthismonth = data
+    )
+
+    if(typeof this.incomes !== 'undefined'){
+      this.years = this.incomeService.getYears();
+      this.getDataSets();
+      this.loadChart()
+    }
   }
 
   onActivated(){
@@ -74,7 +79,6 @@ export class IncomeComponent implements OnInit {
           amountbymonth[month - 1] = this.incomes[j].amount
         }
       }
-
       if(i + 1 == nbyears){
         hidden = false
       }
@@ -95,23 +99,7 @@ export class IncomeComponent implements OnInit {
     return dataSets
   }
 
-  loadIncomes(){
-    this.loadChart();
-  }
-
-  getAverageForChart(){
-    const table = [];
-    let average =  this.incomeService.getAverageByMonth();
-    average = Math.round(average*100)/100
-
-    for (let i = 0; i<12;i++){
-      table.push(average)
-    }
-    return table
-  }
-
   loadChart(){
-    this.canvas = document.getElementById("incomes_graph");
     this.ctx = this.canvas.getContext("2d")
 
     const month_labels = ['JAN', 'FEV', 'MAR', 'AVR', 'MAI', 'JUIN', 'JUIL', 'AOUT', 'SEP', 'OCT', 'NOV', 'DEC'];

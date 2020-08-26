@@ -1,4 +1,4 @@
-import {Component, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import Chart from 'chart.js';
 import {NgForm} from '@angular/forms';
 import {Expense} from '../models/expense';
@@ -11,26 +11,14 @@ import {ExpenseService} from '../services/expense/expense.service';
   styleUrls: ['./expense.component.scss']
 })
 export class ExpenseComponent implements OnInit {
-  @Output() updateSolde = new EventEmitter();
-  activated = true
-
-  expenses
-  years
+  activated = true;
+  expenses;
+  years;
   categories;
-
-  newCategorie = false
-
-
-
+  totalthismonth;
+  total;
   actualDate = Date.now();
-  totalExpenses: number;
-  expensesByDay;
-  expenseThisMonth;
-  expenseLastMont;
-  averageByMonth;
-  averageDiff;
-  absAverageDiff;
-  dataIncomesForChart;
+  newCategorie: boolean;
 
   // graph parameter
   canvas:any;
@@ -40,7 +28,10 @@ export class ExpenseComponent implements OnInit {
   constructor(private userService: UserService, private expenseService: ExpenseService) { }
 
   ngOnInit(): void {
+    this.canvas = document.getElementById("expenses_graph");
     this.expenses = this.expenseService.expenses;
+    this.total = this.expenseService.total;
+    this.totalthismonth = this.expenseService.totalthismonth
     this.expenseService.expenseSubject.subscribe(
       (data) => {this.expenses = data; this.years = this.expenseService.getYears(); this.getDataSets(); this.loadChart();}
     );
@@ -48,6 +39,20 @@ export class ExpenseComponent implements OnInit {
     this.expenseService.getCategories().subscribe(
       (data) => {this.categories = data;}
     );
+
+    this.expenseService.totalSubject.subscribe(
+      (data) => {this.total = data;}
+    )
+
+    this.expenseService.totalthismonthSubject.subscribe(
+      (data) => {this.totalthismonth = data}
+    )
+
+    if(typeof this.expenses !== 'undefined'){
+      this.years = this.expenseService.getYears();
+      this.getDataSets();
+      this.loadChart()
+    }
   }
 
   onActivated(){
@@ -58,17 +63,6 @@ export class ExpenseComponent implements OnInit {
       document.getElementById('expenses_graph').style.display = 'block';
     }
     this.activated = !this.activated
-  }
-
-  getAverageForChart(){
-    const table = [];
-    let average =  this.expenseService.getAverageByMonth();
-    average = Math.round(average*100)/100
-
-    for (let i = 0; i<12;i++){
-      table.push(average)
-    }
-    return table
   }
 
   getDataSets(){
@@ -105,9 +99,7 @@ export class ExpenseComponent implements OnInit {
     return dataSets
   }
 
-
   loadChart(){
-    this.canvas = document.getElementById("expenses_graph");
     this.ctx = this.canvas.getContext("2d")
 
     const month_labels = ['JAN', 'FEV', 'MAR', 'AVR', 'MAI', 'JUIN', 'JUIL', 'AOUT', 'SEPT', 'OCT', 'NOV', 'DEC'];

@@ -8,14 +8,16 @@ import {HttpClient} from '@angular/common/http';
 })
 export class ExpenseService {
   expenses;
-  categories;
+  total;
+  totalthismonth;
   expenseSubject = new Subject();
+  totalSubject = new Subject();
+  totalthismonthSubject = new Subject();
 
   apiURL = 'https://localhost:44390/api/expenses/user/'
 
   constructor(private userService: UserService, private httpClient: HttpClient) {
     this.loadExpenses();
-    this.getCategories();
   }
 
   loadExpenses(){
@@ -25,18 +27,17 @@ export class ExpenseService {
         this.expenseSubject.next(this.expenses);
         this.getYears();
         this.getCategories();
-      }
-    );
+        this.getTotal();
+        this.getTotalThisMonth();
+      });
+  }
+
+  getExpensesList(){
+    return this.httpClient.get(this.apiURL + '1/' + 'expenses')
   }
 
   getExpensesByCategorie(){
     return this.httpClient.get(this.apiURL + '1/' + 'expensesbycategorie')
-  }
-
-  addExpense(newExpense){
-    return this.httpClient.post(this.apiURL, newExpense).subscribe(
-      () => {this.loadExpenses()}
-    );
   }
 
   getYears(){
@@ -56,81 +57,35 @@ export class ExpenseService {
     return this.httpClient.get(this.apiURL + '1/'  + 'categories')
   }
 
-
-  getExpensesForOneMonth(month){
-    // on a d'abord besoin de récupérer tous les mois concernés
-    let sums = 0;
-    const nbData = this.userService.user.expenses.length
-    for (let i = 0;i < nbData; i++){
-      let apiDate = new Date(this.userService.user.expenses[i].date)
-      const apiMonth = apiDate.getMonth();
-      if (apiMonth === month){
-        sums += this.userService.user.expenses[i].amount
-      }
-    }
-    return sums
+  getTotal(){
+    return this.httpClient.get(this.apiURL + '1/' + 'total').subscribe(
+      (data) => {this.total = data; this.totalSubject.next(this.total)}
+      );
   }
 
-  totalExpenses(){
-    let sums = 0;
-    const nb = this.userService.user.expenses.length
-    for (let i = 0; i < nb; i++){
-      sums += this.userService.user.expenses[i].amount
-    }
-    return sums
+  getTotalThisMonth(){
+    return this.httpClient.get(this.apiURL + '1/' + 'totalthismonth').subscribe(
+      (data) => {this.totalthismonth = data; this.totalthismonthSubject.next(this.totalthismonth)}
+    );
   }
 
-  getOldestDate(){
-    // retourne la date la différence entre la date la plus ancienne et le 1/1/1970
-    let oldestDate = new Date().valueOf();
-    const nb = this.userService.user.expenses.length
-    for (let i = 0; i < nb; i++){
-      let datetime = new Date(this.userService.user.expenses[i].date)
-      let dateTest = datetime.valueOf()
-      if(dateTest < oldestDate){
-        oldestDate = dateTest
-      }
-    }
-    return  oldestDate;
+  addExpense(newExpense){
+    const date = new Date().getMonth()
+    this.httpClient.post(this.apiURL, newExpense).subscribe(
+      () => {
+        this.loadExpenses();
+        this.total += newExpense.amount;
+        this.totalSubject.next(this.total)
+
+        if(date === newExpense.date.getMonth()){
+          this.totalthismonth += newExpense.amount;
+          this.totalthismonthSubject.next(this.totalthismonth)
+        }
+      });
   }
 
-  spentDay(){
-    // cette fonction retourne le nombre de jour passé depuis la première dépense
-    const oldestDate = this.getOldestDate();
-    const actualDate = new Date().valueOf();
-
-    return Math.round((actualDate - oldestDate) / 86400000);
+  removeExpense(expenseid){
+    return this.httpClient.delete(this.apiURL + expenseid)
   }
 
-  spentMonth(){
-    // cette fonction retourne le nombre de mois passé depuis la première dépense
-    return this.spentDay()/30.41; // gérer la division en fonction du mois
-  }
-
-  getAverageByDay() {
-    return this.totalExpenses() / this.spentDay()
-  }
-
-  getAverageByMonth(){
-    return this.totalExpenses()/this.spentMonth();
-  }
-
-  getAverageThisMonth(){
-    const nbDay = new Date().getDay();
-    return this.getExpenseThisMonth()/nbDay;
-  }
-
-  getExpenseLastMonth(){
-    const lastMonth = new Date().getMonth() - 1;
-    return this.getExpensesForOneMonth(lastMonth);
-  }
-
-  getExpenseThisMonth(){
-    const thisMonth = new Date().getMonth();
-    return this.getExpensesForOneMonth(thisMonth)
-  }
-
-  getAverageDiff(){
-    return this.getAverageByMonth() - this.getAverageThisMonth();
-  }
 }
