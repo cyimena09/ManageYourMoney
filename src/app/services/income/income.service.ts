@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {UserService} from '../user/user.service';
 import {Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {AuthService} from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,14 +11,22 @@ export class IncomeService {
   incomes;
   total;
   totalthismonth;
+  currentUser
   incomeSubject = new Subject();
   totalSubject = new Subject();
   totalthismonthSubject = new Subject();
 
   apiURL = 'https://localhost:44390/api/incomes/user/'
 
-  constructor(private userService: UserService, private httpClient: HttpClient) {
-    this.loadIncomes();
+  constructor(private userService: UserService, private httpClient: HttpClient, private authService: AuthService) {
+    this.authService.userSubject.subscribe(
+      (data) => { this.currentUser = data;
+        if(this.currentUser != null){
+          this.loadIncomes();
+        }
+      }
+    );
+
   }
 
   loadIncomes(){
@@ -57,7 +66,7 @@ export class IncomeService {
     return this.httpClient.get(this.apiURL + '1/'  + 'categories');
   }
 
-    getTotal(){
+  getTotal(){
     return this.httpClient.get(this.apiURL + '1/' + 'total').subscribe(
       (data) => {this.total = data; this.totalSubject.next(this.total)}
     );

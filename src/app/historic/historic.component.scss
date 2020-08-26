@@ -1,0 +1,15 @@
+.content{
+  display: flex;
+  flex-direction: row;
+  margin-top: 50px;
+}
+
+.table-expense{
+  width: 50%;
+  margin-right: 25px;
+}
+
+.table-income{
+  width: 50%;
+  margin-left: 25px;
+}

@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import {UserService} from '../user/user.service';
 import {Subject} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
+import {AuthService} from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExpenseService {
+  currentUser;
   expenses;
   total;
   totalthismonth;
@@ -16,8 +18,14 @@ export class ExpenseService {
 
   apiURL = 'https://localhost:44390/api/expenses/user/'
 
-  constructor(private userService: UserService, private httpClient: HttpClient) {
-    this.loadExpenses();
+  constructor(private userService: UserService, private httpClient: HttpClient, private authService: AuthService) {
+    this.authService.userSubject.subscribe(
+      (data) => { this.currentUser = data;
+        if(this.currentUser != null){
+          this.loadExpenses();
+        }
+      }
+    );
   }
 
   loadExpenses(){

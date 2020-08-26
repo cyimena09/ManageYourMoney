@@ -11,6 +11,9 @@ import { SoldeComponent } from './solde/solde.component';
 import { CategorieIncomeComponent } from './income/categorie-income/categorie-income.component';
 import { CategorieExpenseComponent } from './expense/categorie-expense/categorie-expense.component';
 import { HistoricComponent } from './historic/historic.component';
+import { NotFoundComponent } from './not-found/not-found.component';
+import { NavComponent } from './nav/nav.component';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
   declarations: [
@@ -21,6 +24,9 @@ import { HistoricComponent } from './historic/historic.component';
     CategorieIncomeComponent,
     CategorieExpenseComponent,
     HistoricComponent,
+    NotFoundComponent,
+    NavComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

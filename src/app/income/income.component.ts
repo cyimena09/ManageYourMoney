@@ -4,6 +4,7 @@ import {NgForm} from '@angular/forms';
 import {Income} from '../models/income';
 import {UserService} from '../services/user/user.service';
 import {IncomeService} from '../services/income/income.service';
+import {AuthService} from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-income',
@@ -11,6 +12,7 @@ import {IncomeService} from '../services/income/income.service';
   styleUrls: ['./income.component.scss']
 })
 export class IncomeComponent implements OnInit {
+  currentUser
   activated = true;
   incomes;
   years;
@@ -25,7 +27,7 @@ export class IncomeComponent implements OnInit {
   ctx;
   myChartLine;
 
-  constructor(private userService: UserService, private incomeService: IncomeService) { }
+  constructor(private userService: UserService, private incomeService: IncomeService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.canvas = document.getElementById("incomes_graph");
@@ -46,7 +48,16 @@ export class IncomeComponent implements OnInit {
 
     this.incomeService.totalthismonthSubject.subscribe(
       (data) => this.totalthismonth = data
-    )
+    );
+
+   this.authService.userSubject.subscribe(
+      (data) => { this.currentUser = data;
+        if(this.currentUser == null){
+          this.getDataSets();
+          this.loadChart()
+        }
+      }
+    );
 
     if(typeof this.incomes !== 'undefined'){
       this.years = this.incomeService.getYears();
@@ -66,6 +77,12 @@ export class IncomeComponent implements OnInit {
   }
 
   getDataSets(){
+    if(this.currentUser == null){
+      if(typeof this.myChartLine !== 'undefined'){
+        this.myChartLine.destroy();
+      }
+      return 0
+    }
     const nbyears = this.years.length
     const nbamount = this.incomes.length
     const dataSets = []

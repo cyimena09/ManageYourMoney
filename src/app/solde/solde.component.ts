@@ -3,6 +3,7 @@ import Chart from 'chart.js';
 import {SoldeService} from '../services/solde/solde.service';
 import {IncomeService} from '../services/income/income.service';
 import {ExpenseService} from '../services/expense/expense.service';
+import {AuthService} from '../services/auth/auth.service';
 
 
 @Component({
@@ -11,6 +12,7 @@ import {ExpenseService} from '../services/expense/expense.service';
   styleUrls: ['./solde.component.scss']
 })
 export class SoldeComponent implements OnInit {
+  currentUser
   years;
   incomes
   expenses
@@ -18,7 +20,8 @@ export class SoldeComponent implements OnInit {
   ctx;
   myChartData;
 
-  constructor(private soldeService: SoldeService, private incomeService: IncomeService, private expenseService: ExpenseService) { }
+  constructor(private soldeService: SoldeService, private incomeService: IncomeService,
+              private expenseService: ExpenseService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.canvas = document.getElementById("solde_graph");
@@ -29,6 +32,15 @@ export class SoldeComponent implements OnInit {
     );
     this.expenseService.expenseSubject.subscribe(
       (data) => {this.expenses = data;  this.loadData() }
+    );
+
+    this.authService.userSubject.subscribe(
+      (data) => { this.currentUser = data;
+        if(this.currentUser == null){
+          this.getDataSets();
+          this.loadChart()
+        }
+      }
     );
 
     if(typeof this.incomes !== 'undefined' && this.expenses !== 'undefined'  ){
@@ -48,15 +60,18 @@ export class SoldeComponent implements OnInit {
       else {
         this.years = this.expenseService.getYears()
       }
-
       this.getDataSets();
       this.loadChart();
-
-
     }
   }
 
   getDataSets(){
+    if(this.currentUser == null){
+      if(typeof this.myChartData !== 'undefined'){
+        this.myChartData.destroy();
+      }
+      return 0
+    }
     const nbyears = this.years.length;
     const dataSets = [];
     const nbexpenseamount = this.expenses.length;

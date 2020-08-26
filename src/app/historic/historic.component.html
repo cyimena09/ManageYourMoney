@@ -1,0 +1,53 @@
+<div class="content">
+
+    <div class="table-expense">
+      <h4>Liste des dépenses encondées</h4>
+      <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Montant</th>
+          <th scope="col">Catégorie</th>
+          <th scope="col">Date</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+        <tbody>
+          <tr *ngFor="let expense of expenses; let i = index">
+            <th scope="row">{{i + 1}}</th>
+            <td>{{expense.amount}}</td>
+            <td>{{expense.categorie}}</td>
+            <td>{{expense.date | date: 'dd/MM/y'}}</td>
+            <td><button class="btn btn-danger btn-sm" (click)="onRemoveExpense(expense.expenseID)">Supprimer</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+    <div class="table-income">
+        <h4>Liste des revenus encondés</h4>
+        <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Montant</th>
+            <th scope="col">Catégorie</th>
+            <th scope="col">Date</th>
+            <th></th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let income of incomes; let i = index">
+            <th scope="row">{{i+1}}</th>
+            <td>{{income.amount}}</td>
+            <td>{{income.categorie}}</td>
+            <td>{{income.date | date: 'dd/MM/y'}}</td>
+            <td><button class="btn btn-danger btn-sm" (click)="onRemoveIncome(income.incomeID)">Supprimer</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+</div>

@@ -4,6 +4,7 @@ import {NgForm} from '@angular/forms';
 import {Expense} from '../models/expense';
 import {UserService} from '../services/user/user.service';
 import {ExpenseService} from '../services/expense/expense.service';
+import {AuthService} from '../services/auth/auth.service';
 
 @Component({
   selector: 'app-expense',
@@ -11,6 +12,7 @@ import {ExpenseService} from '../services/expense/expense.service';
   styleUrls: ['./expense.component.scss']
 })
 export class ExpenseComponent implements OnInit {
+  currentUser
   activated = true;
   expenses;
   years;
@@ -25,7 +27,7 @@ export class ExpenseComponent implements OnInit {
   ctx;
   myChartLine;
 
-  constructor(private userService: UserService, private expenseService: ExpenseService) { }
+  constructor(private userService: UserService, private expenseService: ExpenseService, private authService: AuthService) { }
 
   ngOnInit(): void {
     this.canvas = document.getElementById("expenses_graph");
@@ -53,6 +55,15 @@ export class ExpenseComponent implements OnInit {
       this.getDataSets();
       this.loadChart()
     }
+
+    this.authService.userSubject.subscribe(
+      (data) => { this.currentUser = data;
+        if(this.currentUser == null){
+          this.getDataSets();
+          this.loadChart()
+        }
+      }
+    );
   }
 
   onActivated(){
@@ -66,6 +77,13 @@ export class ExpenseComponent implements OnInit {
   }
 
   getDataSets(){
+    if(this.currentUser == null){
+      if(typeof this.myChartLine !== 'undefined'){
+        this.myChartLine.destroy();
+      }
+      return 0
+    }
+
     const nbyears = this.years.length
     const nbamount = this.expenses.length
     const dataSets = []
