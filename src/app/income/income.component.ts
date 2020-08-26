@@ -19,6 +19,8 @@ export class IncomeComponent implements OnInit {
   categories;
   totalthismonth;
   total;
+  dateDiff;
+  average;
   actualDate = Date.now();
   newCategorie: boolean;
 
@@ -33,7 +35,8 @@ export class IncomeComponent implements OnInit {
     this.canvas = document.getElementById("incomes_graph");
     this.incomes = this.incomeService.incomes;
     this.total = this.incomeService.total;
-    this.totalthismonth = this.incomeService.totalthismonth
+    this.totalthismonth = this.incomeService.totalthismonth;
+
     this.incomeService.incomeSubject.subscribe(
       (data) => {this.incomes = data; this.years = this.incomeService.getYears(); this.getDataSets(); this.loadChart();}
     );
@@ -42,9 +45,21 @@ export class IncomeComponent implements OnInit {
       (data) => {this.categories = data;}
     );
 
-   this.incomeService.totalSubject.subscribe(
-      (data) => this.total = data
-    )
+    this.incomeService.totalSubject.subscribe(
+      (data) => {
+        this.total = data;
+        if(typeof this.total !== 'undefined' && typeof this.dateDiff !== 'undefined'){
+          this.average = Math.round((this.total / this.dateDiff)*100) /100 ;
+        }
+      });
+
+    this.incomeService.dateDiffSubject.subscribe(
+      (data) => {
+        this.dateDiff = data;
+        if(typeof this.total !== 'undefined' && typeof this.dateDiff !== 'undefined'){
+          this.average = Math.round((this.total / this.dateDiff)*100) /100 ;
+        }
+      });
 
     this.incomeService.totalthismonthSubject.subscribe(
       (data) => this.totalthismonth = data
@@ -80,6 +95,9 @@ export class IncomeComponent implements OnInit {
     if(this.currentUser == null){
       if(typeof this.myChartLine !== 'undefined'){
         this.myChartLine.destroy();
+        this.average = 0
+        this.total = 0
+        this.totalthismonth = 0
       }
       return 0
     }

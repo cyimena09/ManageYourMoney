@@ -20,8 +20,23 @@
           <!-- End banner card-->
 
           <!-- Body Card -->
-          <div>Avril : <strong style="color: #620c0c">{{totalthismonth}}€</strong> | 50% de plus que le mois précédent</div>
-          <div>Moyenne : <strong style="color: #104710">450 € </strong>par mois</div>
+          <div class="info">
+            <div class="date">{{actualDate |date: 'MMMM yyyy'}} : </div>
+
+            <div>
+              <strong *ngIf="this.totalthismonth != null" style="color: #620c0c"> {{totalthismonth}} €</strong>
+              <strong *ngIf="this.totalthismonth == null" style="color: #620c0c">0 €</strong>
+            </div>
+
+          </div>
+
+          <div>Moyenne :
+            <strong *ngIf="this.average != null" style="color: #104710">{{average}} € </strong>
+            <strong *ngIf="this.average == null" style="color: #104710">0 € </strong>
+            par mois
+          </div>
+
+
             <div [ngClass]="{'card-body': !activated,
                              'card-body mt-0': activated}">
               <div  id="graph">

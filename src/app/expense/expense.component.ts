@@ -19,6 +19,8 @@ export class ExpenseComponent implements OnInit {
   categories;
   totalthismonth;
   total;
+  dateDiff;
+  average;
   actualDate = Date.now();
   newCategorie: boolean;
 
@@ -33,7 +35,9 @@ export class ExpenseComponent implements OnInit {
     this.canvas = document.getElementById("expenses_graph");
     this.expenses = this.expenseService.expenses;
     this.total = this.expenseService.total;
-    this.totalthismonth = this.expenseService.totalthismonth
+    this.dateDiff = this.expenseService.dateDiff;
+    this.totalthismonth = this.expenseService.totalthismonth;
+
     this.expenseService.expenseSubject.subscribe(
       (data) => {this.expenses = data; this.years = this.expenseService.getYears(); this.getDataSets(); this.loadChart();}
     );
@@ -43,18 +47,24 @@ export class ExpenseComponent implements OnInit {
     );
 
     this.expenseService.totalSubject.subscribe(
-      (data) => {this.total = data;}
-    )
+      (data) => {
+        this.total = data;
+        if(typeof this.total !== 'undefined' && typeof this.dateDiff !== 'undefined'){
+          this.average = Math.round((this.total / this.dateDiff)*100) /100 ;
+        }
+      });
+
+    this.expenseService.dateDiffSubject.subscribe(
+      (data) => {
+        this.dateDiff = data;
+        if(typeof this.total !== 'undefined' && typeof this.dateDiff !== 'undefined'){
+          this.average = Math.round((this.total / this.dateDiff)*100) /100 ;
+        }
+      });
 
     this.expenseService.totalthismonthSubject.subscribe(
       (data) => {this.totalthismonth = data}
-    )
-
-    if(typeof this.expenses !== 'undefined'){
-      this.years = this.expenseService.getYears();
-      this.getDataSets();
-      this.loadChart()
-    }
+    );
 
     this.authService.userSubject.subscribe(
       (data) => { this.currentUser = data;
@@ -64,6 +74,13 @@ export class ExpenseComponent implements OnInit {
         }
       }
     );
+
+    if(typeof this.expenses !== 'undefined'){
+      this.years = this.expenseService.getYears();
+      this.getDataSets();
+      this.loadChart()
+    }
+
   }
 
   onActivated(){
@@ -80,6 +97,9 @@ export class ExpenseComponent implements OnInit {
     if(this.currentUser == null){
       if(typeof this.myChartLine !== 'undefined'){
         this.myChartLine.destroy();
+        this.average = 0;
+        this.total = 0;
+        this.totalthismonth = 0;
       }
       return 0
     }

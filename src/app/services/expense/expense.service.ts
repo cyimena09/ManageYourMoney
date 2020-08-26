@@ -11,9 +11,11 @@ export class ExpenseService {
   currentUser;
   expenses;
   total;
+  dateDiff;
   totalthismonth;
   expenseSubject = new Subject();
   totalSubject = new Subject();
+  dateDiffSubject = new Subject();
   totalthismonthSubject = new Subject();
 
   apiURL = 'https://localhost:44390/api/expenses/user/'
@@ -36,6 +38,7 @@ export class ExpenseService {
         this.getYears();
         this.getCategories();
         this.getTotal();
+        this.getDateDiff();
         this.getTotalThisMonth();
       });
   }
@@ -71,6 +74,12 @@ export class ExpenseService {
       );
   }
 
+  getDateDiff(){
+    return this.httpClient.get(this.apiURL + '1/' + 'datediff').subscribe(
+      (data) => {this.dateDiff = data; this.dateDiffSubject.next(this.dateDiff);}
+    );
+  }
+
   getTotalThisMonth(){
     return this.httpClient.get(this.apiURL + '1/' + 'totalthismonth').subscribe(
       (data) => {this.totalthismonth = data; this.totalthismonthSubject.next(this.totalthismonth)}
@@ -83,7 +92,8 @@ export class ExpenseService {
       () => {
         this.loadExpenses();
         this.total += newExpense.amount;
-        this.totalSubject.next(this.total)
+        this.totalSubject.next(this.total);
+        this.dateDiffSubject.next(this.dateDiff)
 
         if(date === newExpense.date.getMonth()){
           this.totalthismonth += newExpense.amount;

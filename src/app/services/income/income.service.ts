@@ -10,10 +10,12 @@ import {AuthService} from '../auth/auth.service';
 export class IncomeService {
   incomes;
   total;
+  dateDiff;
   totalthismonth;
   currentUser
   incomeSubject = new Subject();
   totalSubject = new Subject();
+  dateDiffSubject = new Subject();
   totalthismonthSubject = new Subject();
 
   apiURL = 'https://localhost:44390/api/incomes/user/'
@@ -37,6 +39,7 @@ export class IncomeService {
         this.getYears();
         this.getCategories();
         this.getTotal();
+        this.getDateDiff();
         this.getTotalThisMonth();
       });
   }
@@ -69,6 +72,12 @@ export class IncomeService {
   getTotal(){
     return this.httpClient.get(this.apiURL + '1/' + 'total').subscribe(
       (data) => {this.total = data; this.totalSubject.next(this.total)}
+    );
+  }
+
+   getDateDiff(){
+    return this.httpClient.get(this.apiURL + '1/' + 'datediff').subscribe(
+      (data) => {this.dateDiff = data; this.dateDiffSubject.next(this.dateDiff);}
     );
   }
 
