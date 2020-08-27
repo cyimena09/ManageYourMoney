@@ -7,28 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'Manage Your Money';
-  gestionActivated: boolean = true;
-  comparateurActivated: boolean = false
-  historiqueActivated: boolean = false
 
   date = new Date().getFullYear();
 
+  constructor() {
 
-  onGestionActivated(){
-    this.gestionActivated = true;
-    this.comparateurActivated = false;
-    this.historiqueActivated = false;
   }
 
-  onComparateurActivated(){
-    this.comparateurActivated = true
-    this.gestionActivated = false;
-    this.historiqueActivated = false
-  }
 
-  onHistoriqueActivated(){
-    this.historiqueActivated = true;
-    this.gestionActivated = false;
-    this.comparateurActivated = false
-  }
+
 }

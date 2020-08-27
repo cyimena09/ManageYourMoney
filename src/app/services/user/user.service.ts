@@ -6,20 +6,14 @@ import {HttpClient} from '@angular/common/http';
 })
 export class UserService {
 
-  user;
-  apiUrl = 'http://localhost:3000/users/1';
+  apiUrl = 'https://localhost:44390/api/users';
 
   constructor(private httpClient: HttpClient) {
 
   }
 
-  getUser(){
-    return this.httpClient.get(this.apiUrl).subscribe(
-      (data) => this.user = data
-    );
-  }
 
-  saveUser(user){
-    return this.httpClient.put(this.apiUrl, user).subscribe();
+  createUser(user){
+    return this.httpClient.post(this.apiUrl, user)
   }
 }

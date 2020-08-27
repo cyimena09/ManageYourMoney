@@ -16,7 +16,7 @@ export class IncomeComponent implements OnInit {
   activated = true;
   incomes;
   years;
-  categories;
+  categories: any = [];
   totalthismonth;
   total;
   dateDiff;
@@ -32,18 +32,23 @@ export class IncomeComponent implements OnInit {
   constructor(private userService: UserService, private incomeService: IncomeService, private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.currentUser = this.authService.currentUser;
     this.canvas = document.getElementById("incomes_graph");
     this.incomes = this.incomeService.incomes;
     this.total = this.incomeService.total;
+    this.average = this.incomeService.average;
     this.totalthismonth = this.incomeService.totalthismonth;
 
     this.incomeService.incomeSubject.subscribe(
       (data) => {this.incomes = data; this.years = this.incomeService.getYears(); this.getDataSets(); this.loadChart();}
     );
 
-    this.incomeService.getCategories().subscribe(
+    if(this.currentUser != null){
+      this.incomeService.getCategories().subscribe(
       (data) => {this.categories = data;}
     );
+    }
+
 
     this.incomeService.totalSubject.subscribe(
       (data) => {
@@ -107,6 +112,14 @@ export class IncomeComponent implements OnInit {
     let hidden = true
 
     for(let i = 0; i < nbyears; i++){
+      let color
+      if(i == nbyears - 1){
+        color = '#ffffff';
+      }
+      else {
+        color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+      }
+
       let amountbymonth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       for(let j = 0; j< nbamount; j++){
         if(this.incomes[j].year == this.years[i]){
@@ -121,10 +134,10 @@ export class IncomeComponent implements OnInit {
           label: this.years[i],
         hidden: hidden,
           fill: true,
-          borderColor: '#ffffff',
+          borderColor: color,
           borderWidth: 2,
-          pointBackgroundColor: '#ffffff',
-          pointHoverBackgroundColor: '#ffffff',
+          pointBackgroundColor: color,
+          pointHoverBackgroundColor: color,
           pointBorderWidth: 4,
           pointHoverRadius: 6,
           data: amountbymonth
@@ -184,21 +197,19 @@ export class IncomeComponent implements OnInit {
     else{
       newIncome.categorie = categorie;
     }
-
     newIncome.date = new Date(date);
-    newIncome.userID = 1
-    this.myChartLine.destroy();
+    newIncome.userID = Number(this.currentUser.UserID);
     this.incomeService.addIncome(newIncome);
+    this.myChartLine.destroy();
   }
 
   onAddCategorie(){
     this.newCategorie = !this.newCategorie;
   }
 
-  onSaveCategorie(form: NgForm){
+ onSaveCategorie(form: NgForm){
     const newCat = form.value['categorie'];
-    this.userService.user.incomeCategories.push(newCat);
-    this.userService.saveUser(this.userService.user);
+    this.categories.push(newCat);
     form.reset();
   }
 

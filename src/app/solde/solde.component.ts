@@ -80,6 +80,13 @@ export class SoldeComponent implements OnInit {
     let hidden = true
 
     for(let i = 0; i < nbyears; i++){
+      let color;
+      if(i == nbyears - 1){
+        color = '#ffffff';
+      }
+      else {
+        color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+      }
       let expensesbymonth = [0,0,0,0,0,0,0,0,0,0,0,0];
       let incomesbymonth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       for(let j = 0; j < nbexpenseamount; j++){
@@ -109,10 +116,10 @@ export class SoldeComponent implements OnInit {
           label: this.years[i],
           hidden: hidden,
           fill: true,
-          borderColor: '#ffffff',
+          borderColor: color,
           borderWidth: 2,
-          pointBackgroundColor: '#ffffff',
-          pointHoverBackgroundColor: '#ffffff',
+          pointBackgroundColor: color,
+          pointHoverBackgroundColor: color,
           pointBorderWidth: 4,
           pointHoverRadius: 6,
           data: incomesbymonth

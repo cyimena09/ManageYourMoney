@@ -32,20 +32,21 @@ span{
   padding-bottom: 3px;
 }
 
-
 .footer{
   color: white;
 }
-
 
 #total {
   border-top: solid white 0.1px;
   padding-top: 3px;
 }
 
-.info{
+.info, .average{
   display: flex;
   flex-direction: row;
+  justify-content: space-between;
+  width: 35%;
+  margin-left: 20px;
 }
 
 
@@ -55,6 +56,12 @@ span{
   padding: 10px;
   border: solid 1px silver;
   background-color: rgb(231, 229, 229,0.1);}
+
+.newCat{
+  margin-top: 10px;
+  margin-left: 26%;
+  width: 310px;
+}
 
 .banner_subtitle{
   position: relative;
@@ -69,3 +76,7 @@ span{
 #graph{
   width: 700px;
 }
+
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';

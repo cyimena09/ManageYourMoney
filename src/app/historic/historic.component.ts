@@ -19,20 +19,20 @@ export class HistoricComponent implements OnInit {
   ngOnInit(): void {
 
 
-    this.incomeService.getIncomesList().subscribe(
+    if(this.incomeService.currentUser != null && this.expenseService.currentUser != null){
+      this.incomeService.getIncomesList().subscribe(
       (data) => {this.incomes = data;}
-    );
+      );
 
-    this.expenseService.getExpensesList().subscribe(
+      this.expenseService.getExpensesList().subscribe(
       (data) => {this.expenses = data;}
-    );
+      );
+    }
 
     this.expenseSubject.subscribe(
       (data) => {this.expenses = data}
     )
   }
-
-
 
   onRemoveExpense(expenseid){
     return this.expenseService.removeExpense(expenseid).subscribe(
@@ -51,7 +51,7 @@ export class HistoricComponent implements OnInit {
         this.incomes = this.incomes.filter(income => income.incomeID != incomeid)
         this.incomeSubject.next(this.incomes);
         this.incomeService.loadIncomes();
-      })
+      });
   }
 
 }

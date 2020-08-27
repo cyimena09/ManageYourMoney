@@ -19,6 +19,9 @@ import { HistoricComponent } from './historic/historic.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { NavComponent } from './nav/nav.component';
 import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { OngletComponent } from './onglet/onglet.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -32,12 +35,15 @@ import { LoginComponent } from './login/login.component';
     NotFoundComponent,
     NavComponent,
     LoginComponent,
+    RegisterComponent,
+    OngletComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    NgbModule
   ],
   providers: [{ provide: LOCALE_ID, useValue: "fr-Fr" }],
   bootstrap: [AppComponent]

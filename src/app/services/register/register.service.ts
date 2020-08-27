@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-
+import {Subject} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SoldeService {
+export class RegisterService {
 
-
+  inscriptionSubject = new Subject();
   constructor() { }
-
-
 }

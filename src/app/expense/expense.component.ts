@@ -16,7 +16,7 @@ export class ExpenseComponent implements OnInit {
   activated = true;
   expenses;
   years;
-  categories;
+  categories:any = [];
   totalthismonth;
   total;
   dateDiff;
@@ -32,19 +32,23 @@ export class ExpenseComponent implements OnInit {
   constructor(private userService: UserService, private expenseService: ExpenseService, private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.currentUser = this.authService.currentUser
     this.canvas = document.getElementById("expenses_graph");
     this.expenses = this.expenseService.expenses;
     this.total = this.expenseService.total;
     this.dateDiff = this.expenseService.dateDiff;
+    this.average = this.expenseService.average;
     this.totalthismonth = this.expenseService.totalthismonth;
 
     this.expenseService.expenseSubject.subscribe(
       (data) => {this.expenses = data; this.years = this.expenseService.getYears(); this.getDataSets(); this.loadChart();}
     );
 
-    this.expenseService.getCategories().subscribe(
+    if(this.currentUser != null){
+      this.expenseService.getCategories().subscribe(
       (data) => {this.categories = data;}
-    );
+      );
+    }
 
     this.expenseService.totalSubject.subscribe(
       (data) => {
@@ -110,6 +114,13 @@ export class ExpenseComponent implements OnInit {
     let hidden = true
 
     for(let i = 0; i < nbyears; i++){
+      let color
+      if(i == nbyears - 1){
+        color = '#ffffff';
+      }
+      else {
+        color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+      }
       let amountbymonth = [0,0,0,0,0,0,0,0,0,0,0,0];
       for(let j = 0; j< nbamount; j++){
         if(this.expenses[j].year == this.years[i]){
@@ -124,10 +135,10 @@ export class ExpenseComponent implements OnInit {
           label: this.years[i],
         hidden: hidden,
           fill: true,
-          borderColor: '#ffffff',
+          borderColor: color,
           borderWidth: 2,
-          pointBackgroundColor: '#ffffff',
-          pointHoverBackgroundColor: '#ffffff',
+          pointBackgroundColor: color,
+          pointHoverBackgroundColor: color,
           pointBorderWidth: 4,
           pointHoverRadius: 6,
           data: amountbymonth
@@ -180,7 +191,7 @@ export class ExpenseComponent implements OnInit {
       newExpense.categorie = categorie;
     }
     newExpense.date = new Date(date);
-    newExpense.userID = 1
+    newExpense.userID = Number(this.currentUser.UserID);
     this.expenseService.addExpense(newExpense);
     this.myChartLine.destroy();
   }

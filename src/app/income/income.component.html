@@ -23,19 +23,20 @@
 
 
           <div class="info">
-            <div class="date">{{actualDate |date: 'MMMM yyyy'}} : </div>
+                <div class="date">{{actualDate |date: 'MMMM yyyy'}} : </div>
 
-            <div>
-              <strong *ngIf="this.totalthismonth != null" style="color: #620c0c">{{totalthismonth}} €</strong>
-              <strong *ngIf="this.totalthismonth == null" style="color: #620c0c">0 €</strong>
-            </div>
-
+                <div >
+                  <strong  *ngIf="this.totalthismonth != null"  >{{totalthismonth}} €</strong>
+                  <strong *ngIf="this.totalthismonth == null"  >0 €</strong>
+                </div>
           </div>
 
-          <div>Moyenne :
-            <strong *ngIf="this.average != null" style="color: #104710">{{average}} € </strong>
-            <strong *ngIf="this.average == null" style="color: #104710">0 € </strong>
-            par mois
+          <div class="average">Moyenne (mois) :
+            <div>
+              <strong  *ngIf="this.average != null" class="number" >{{average}} € </strong>
+              <strong  *ngIf="this.average == null" class="number" >0 € </strong>
+            </div>
+
           </div>
 
 
@@ -61,7 +62,8 @@
 <!-- Footer card -->
           <div class="card-footer bg-success">
 
-            <p class="footer" id="total">TOTAL : <strong>{{total}} €</strong> </p>
+            <p class="footer" id="total">TOTAL : <strong *ngIf="total != null">{{total}} €</strong>  <strong *ngIf="total == null">0 €</strong></p>
+
           </div>
           <!-- End footer card -->
 
@@ -92,7 +94,7 @@
 
 
 <!-- add new category formulaire -->
-    <form id="newCat" *ngIf="newCategorie" (ngSubmit)="onSaveCategorie(g)" #g="ngForm" >
+    <form class="newCat" *ngIf="newCategorie" (ngSubmit)="onSaveCategorie(g)" #g="ngForm" >
       <div  class="input-group mb-2 mr-sm-2">
           <input class="form-control" name="categorie" type="text" placeholder="Catégorie" ngModel required>
           <div class="input-group-prepend">

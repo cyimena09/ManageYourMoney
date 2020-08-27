@@ -11,6 +11,7 @@ export class IncomeService {
   incomes;
   total;
   dateDiff;
+  average;
   totalthismonth;
   currentUser
   incomeSubject = new Subject();
@@ -32,7 +33,7 @@ export class IncomeService {
   }
 
   loadIncomes(){
-    return this.httpClient.get(this.apiURL + '1/' + 'incomesbyyears' ).subscribe(
+    return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/incomesbyyears' ).subscribe(
       (data) => {
         this.incomes = data;
         this.incomeSubject.next(this.incomes);
@@ -45,11 +46,11 @@ export class IncomeService {
   }
 
   getIncomesList(){
-    return this.httpClient.get(this.apiURL + '1/' + 'incomes')
+    return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/incomes')
   }
 
   getIncomesByCategorie(){
-    return this.httpClient.get(this.apiURL + '1/' + 'incomesbycategorie')
+    return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/incomesbycategorie')
   }
 
   getYears(){
@@ -66,23 +67,32 @@ export class IncomeService {
   }
 
   getCategories(){
-    return this.httpClient.get(this.apiURL + '1/'  + 'categories');
+    return this.httpClient.get(this.apiURL + this.currentUser.UserID  + '/categories');
   }
 
   getTotal(){
-    return this.httpClient.get(this.apiURL + '1/' + 'total').subscribe(
-      (data) => {this.total = data; this.totalSubject.next(this.total)}
+    return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/total').subscribe(
+      (data) => {this.total = data; this.totalSubject.next(this.total)
+      if(typeof this.dateDiff != 'undefined'){
+        this.average = Math.round((this.total / this.dateDiff)*100) /100
+      }}
     );
   }
 
    getDateDiff(){
-    return this.httpClient.get(this.apiURL + '1/' + 'datediff').subscribe(
-      (data) => {this.dateDiff = data; this.dateDiffSubject.next(this.dateDiff);}
+    return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/datediff').subscribe(
+      (data) => {
+        this.dateDiff = data;
+        this.dateDiffSubject.next(this.dateDiff);
+        if(typeof this.total != 'undefined'){
+        this.average = Math.round((this.total / this.dateDiff)*100) /100
+      }
+      }
     );
   }
 
   getTotalThisMonth(){
-    return this.httpClient.get(this.apiURL + '1/' + 'totalthismonth').subscribe(
+    return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/totalthismonth').subscribe(
       (data) => {this.totalthismonth = data; this.totalthismonthSubject.next(this.totalthismonth)}
     )
   }
