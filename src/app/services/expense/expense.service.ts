@@ -19,7 +19,7 @@ export class ExpenseService {
   dateDiffSubject = new Subject();
   totalthismonthSubject = new Subject();
 
-  apiURL = 'https://localhost:44390/api/expenses/user/'
+  apiURL = 'https://apimanageyourmoney.emile404.be/api/expenses/user/';
 
   constructor(private userService: UserService, private httpClient: HttpClient, private authService: AuthService) {
     this.authService.userSubject.subscribe(

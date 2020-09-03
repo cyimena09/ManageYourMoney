@@ -1,7 +1,7 @@
 <div class="container-fluid">
 <!-- Graph balance -->
     <div class="card text-white bg-warning mb-3 mt-4">
-      <div class="card-header">Evolution du solde</div>
+      <div class="card-header">Évolution du solde</div>
       <div class="card-body">
         <div >
             <canvas id="solde_graph" height="35px" ></canvas>
@@ -14,11 +14,11 @@
 <!-- Expense and Income component -->
     <div class="row">
         <div class="col-lg-6">
-          <app-expense (updateSolde)="loadChart()"></app-expense>
+          <app-expense></app-expense>
         </div>
 
         <div class="col-lg-6">
-          <app-income (updateSolde)="loadChart()"></app-income>
+          <app-income></app-income>
         </div>
     </div>
 <!-- End Expense and Income component -->

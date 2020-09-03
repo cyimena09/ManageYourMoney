@@ -7,12 +7,22 @@
           <div class="banner card-header">
 
 
-          <div class="title">
-            <div >Revenus </div>
-            <a *ngIf="activated" routerLink="" title="Revenus par catégorie" (click)="onActivated()">
-              <span class="fas fa-chart-pie" style="color: white"></span></a>
-            <a *ngIf="!activated" routerLink="" title="Revenus par mois" (click)="onActivated()">
-              <span class="fas fa-chart-line" style="color: white"></span></a>
+             <div class="title">
+            <div>Revenus</div>
+            <a *ngIf="activated" routerLink=""
+               placement="right"
+               ngbTooltip="Revenus par catégorie"
+               [openDelay]="500"
+               (click)="onActivated()">
+              <span class="fas fa-chart-pie"></span></a>
+
+
+            <a *ngIf="!activated" routerLink=""
+               placement="right"
+               ngbTooltip="Revenus par mois"
+               [openDelay]="500"
+               (click)="onActivated()">
+              <span class="fas fa-chart-line"></span></a>
           </div>
 
 
@@ -78,7 +88,7 @@
      </div>
 
    <!-- Category -->
-     <select id="categories" class="form-control" name="categorie" ngModel required>
+     <select class="form-control categorie" name="categorie" ngModel required>
        <option value="" disabled selected hidden>Catégorie</option>
        <option style="background-color: rgb(89,169,255); color: aliceblue" (click)="onAddCategorie()">Nouveau</option>
        <option *ngFor="let cat of categories" >{{cat}}</option>
@@ -87,8 +97,14 @@
 
    <!-- Date  -->
      <input class="form-control input_main" type="Date" id="date" name="date"  ngModel="{{actualDate | date:'yyyy-MM-dd'}}">
-     <button class="btn btn-primary" type="submit" [disabled]="f.invalid">Ajouter</button>
-   <!-- End date  -->
+     <button *ngIf="currentUser !== null" class="btn btn-primary" type="submit" [disabled]="f.invalid">Ajouter</button>
+
+    <button *ngIf="currentUser == null" class="btn btn-outline-secondary"
+        disabled
+        placement="right"
+        ngbTooltip="Vous devez vous connecter pour ajouter un revenu"
+        routerLink="">Ajouter</button>
+
   </form>
 <!-- End main form -->
 

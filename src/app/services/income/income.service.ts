@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {UserService} from '../user/user.service';
 import {Subject} from 'rxjs';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {AuthService} from '../auth/auth.service';
 
 @Injectable({
@@ -13,13 +13,21 @@ export class IncomeService {
   dateDiff;
   average;
   totalthismonth;
-  currentUser
+  currentUser;
   incomeSubject = new Subject();
   totalSubject = new Subject();
   dateDiffSubject = new Subject();
   totalthismonthSubject = new Subject();
 
-  apiURL = 'https://localhost:44390/api/incomes/user/'
+
+  headers = new HttpHeaders()
+    .set('content-type', 'application/json')
+    .set("Access-Control-Allow-Origin", "*")
+    .set('Access-Control-Request-Method', 'DELETE')
+
+
+  apiURL = 'https://apimanageyourmoney.emile404.be/api/incomes/user/'
+
 
   constructor(private userService: UserService, private httpClient: HttpClient, private authService: AuthService) {
     this.authService.userSubject.subscribe(
@@ -86,7 +94,7 @@ export class IncomeService {
         this.dateDiffSubject.next(this.dateDiff);
         if(typeof this.total != 'undefined'){
         this.average = Math.round((this.total / this.dateDiff)*100) /100
-      }
+        }
       }
     );
   }
@@ -113,7 +121,7 @@ export class IncomeService {
   }
 
   removeIncome(incomeid){
-    return this.httpClient.delete(this.apiURL + incomeid)
+    return this.httpClient.delete(this.apiURL + incomeid, { 'headers': this.headers })
   }
 
 }

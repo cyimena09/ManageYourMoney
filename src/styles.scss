@@ -41,6 +41,12 @@ span{
   padding-top: 3px;
 }
 
+#total strong {
+  margin-left: 20px;
+}
+
+
+
 .info, .average{
   display: flex;
   flex-direction: row;
@@ -50,17 +56,16 @@ span{
 }
 
 
+
 //categorie
 
-#categorie{
-  padding: 10px;
-  border: solid 1px silver;
-  background-color: rgb(231, 229, 229,0.1);}
+.categorie{
+  margin-right: 10px}
 
 .newCat{
   margin-top: 10px;
-  margin-left: 26%;
-  width: 310px;
+  margin-left: 27%;
+  width: 300px;
 }
 
 .banner_subtitle{
@@ -76,6 +81,21 @@ span{
 #graph{
   width: 700px;
 }
+
+
+.fas{
+  font-size: 20px;
+  color: white;
+  transition: 0.3s ease-in-out;
+}
+
+.fas:hover{
+  color: #3030a0;
+  transform: scale(1.1);
+  transition: 0.3s ease-in-out;
+}
+
+
 
 
 /* Importing Bootstrap SCSS file. */

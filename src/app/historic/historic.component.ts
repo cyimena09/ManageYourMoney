@@ -10,15 +10,14 @@ import {Subject} from 'rxjs';
 })
 export class HistoricComponent implements OnInit {
 
-  expenses
-  incomes
+  expenses;
+  incomes;
   expenseSubject = new Subject();
   incomeSubject = new Subject();
   constructor(private incomeService: IncomeService, private expenseService: ExpenseService) { }
 
+
   ngOnInit(): void {
-
-
     if(this.incomeService.currentUser != null && this.expenseService.currentUser != null){
       this.incomeService.getIncomesList().subscribe(
       (data) => {this.incomes = data;}
@@ -40,8 +39,9 @@ export class HistoricComponent implements OnInit {
         this.expenses = this.expenses.filter(expense => expense.expenseID != expenseid )
         this.expenseSubject.next(this.expenses);
         this.expenseService.loadExpenses();
-      }
-    )
+        },
+      (error) => {console.log(error);}
+      );
 
   }
 
@@ -51,7 +51,9 @@ export class HistoricComponent implements OnInit {
         this.incomes = this.incomes.filter(income => income.incomeID != incomeid)
         this.incomeSubject.next(this.incomes);
         this.incomeService.loadIncomes();
-      });
+        },
+      (error) => {console.log(error)}
+      );
   }
 
 }

@@ -1,11 +1,21 @@
 
 body{
+  flex-direction: column;
+  justify-content: space-between;
   background-color: rgb(238,238,238);
 }
 
-#graph_income_expense{
-  margin-top: 2%;
-  border:solid;
-  display: flex;
-  justify-content: space-around;
+#main{
+  min-height: 50em;
 }
+
+
+footer{
+  display: flex;
+  justify-content: center;
+  margin-top: 10%;
+  padding: 3% 0 2% 0;
+  color: white;
+  background-color: #242729;
+}
+

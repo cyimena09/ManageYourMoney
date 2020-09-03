@@ -4,6 +4,7 @@ import {SoldeService} from '../services/solde/solde.service';
 import {IncomeService} from '../services/income/income.service';
 import {ExpenseService} from '../services/expense/expense.service';
 import {AuthService} from '../services/auth/auth.service';
+import {RegisterService} from '../services/register/register.service';
 
 
 @Component({
@@ -21,9 +22,11 @@ export class SoldeComponent implements OnInit {
   myChartData;
 
   constructor(private soldeService: SoldeService, private incomeService: IncomeService,
-              private expenseService: ExpenseService, private authService: AuthService) { }
+              private expenseService: ExpenseService, private authService: AuthService,
+              private registerService: RegisterService) { }
 
   ngOnInit(): void {
+    this.registerService.inscriptionSubject.next(false)
     this.canvas = document.getElementById("solde_graph");
     this.incomes = this.incomeService.incomes;
     this.expenses = this.expenseService.expenses;

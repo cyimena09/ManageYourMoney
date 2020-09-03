@@ -6,7 +6,7 @@ import {HttpClient} from '@angular/common/http';
 })
 export class UserService {
 
-  apiUrl = 'https://localhost:44390/api/users';
+  apiUrl = 'https://apimanageyourmoney.emile404.be/api/users';
 
   constructor(private httpClient: HttpClient) {
 
