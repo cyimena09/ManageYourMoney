@@ -88,9 +88,9 @@
      </div>
 
    <!-- Category -->
-     <select class="form-control categorie" name="categorie" ngModel required>
+     <select class="form-control category" name="category" ngModel required>
        <option value="" disabled selected hidden>Catégorie</option>
-       <option style="background-color: rgb(89,169,255); color: aliceblue" (click)="onAddCategorie()">Nouveau</option>
+       <option style="background-color: rgb(89,169,255); color: aliceblue" (click)="onAddCategory()">Nouveau</option>
        <option *ngFor="let cat of categories" >{{cat}}</option>
      </select>
    <!-- End category -->
@@ -110,13 +110,15 @@
 
 
 <!-- add new category formulaire -->
-    <form class="newCat" *ngIf="newCategorie" (ngSubmit)="onSaveCategorie(g)" #g="ngForm" >
+    <form class="newCat" *ngIf="newCategory" (ngSubmit)="onSaveCategory(g)" #g="ngForm" >
       <div  class="input-group mb-2 mr-sm-2">
-          <input class="form-control" name="categorie" type="text" placeholder="Catégorie" ngModel required>
+          <input class="form-control" name="category" type="text" placeholder="Catégorie" ngModel required>
           <div class="input-group-prepend">
             <button class="btn btn-success" type="submit" [disabled]="g.invalid">+</button>
           </div>
-        <button class="btn btn-danger ml-2 btn-sm" (click)="onAddCategorie()">Terminer</button>
+        <button class="btn btn-danger ml-2 btn-sm" (click)="onAddCategory()">Terminer</button>
       </div>
     </form>
 <!-- End add new category -->
+
+<div *ngIf="invalid" class="invalid-amount">Montant incorrect !</div>

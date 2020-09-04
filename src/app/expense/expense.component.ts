@@ -22,16 +22,19 @@ export class ExpenseComponent implements OnInit {
   dateDiff;
   average;
   actualDate = Date.now();
-  newCategorie: boolean;
+  newCategory: boolean;
 
   // graph parameter
   canvas:any;
   ctx;
   myChartLine;
+  //check encoding
+  invalid: boolean = false;
 
   constructor(private userService: UserService, private expenseService: ExpenseService, private authService: AuthService) { }
 
   ngOnInit(): void {
+
     this.currentUser = this.authService.currentUser
     this.canvas = document.getElementById("expenses_graph");
     this.expenses = this.expenseService.expenses;
@@ -39,16 +42,17 @@ export class ExpenseComponent implements OnInit {
     this.dateDiff = this.expenseService.dateDiff;
     this.average = this.expenseService.average;
     this.totalthismonth = this.expenseService.totalthismonth;
+    this.categories = this.expenseService.categories
+
+
 
     this.expenseService.expenseSubject.subscribe(
-      (data) => {this.expenses = data; this.years = this.expenseService.getYears(); this.getDataSets(); this.loadChart();}
-    );
-
-    if(this.currentUser != null){
-      this.expenseService.getCategories().subscribe(
-      (data) => {this.categories = data;}
-      );
-    }
+      (data) => {
+        this.expenses = data;
+        this.years = this.expenseService.getYears();
+        this.getDataSets();
+        this.loadChart();
+      });
 
     this.expenseService.totalSubject.subscribe(
       (data) => {
@@ -70,6 +74,10 @@ export class ExpenseComponent implements OnInit {
       (data) => {this.totalthismonth = data}
     );
 
+    this.expenseService.categorySubject.subscribe(
+      (data) => {this.categories = data}
+    );
+
     this.authService.userSubject.subscribe(
       (data) => { this.currentUser = data;
         if(this.currentUser == null){
@@ -84,8 +92,10 @@ export class ExpenseComponent implements OnInit {
       this.getDataSets();
       this.loadChart()
     }
-
   }
+
+
+  //****************************************************--- METHOD ---***************************************************************
 
   onActivated(){
     if(this.activated){
@@ -177,31 +187,38 @@ export class ExpenseComponent implements OnInit {
 
   onAddExpense(form: NgForm){
     let amount = form.value['amount'];
-    amount = Number(amount)
-    const categorie = form.value['categorie'];
-    const date = form.value['date']
-    const newExpense = new Expense();
-    newExpense.amount = amount;
+    amount = Number(amount);
 
-    if (categorie == ""){
-      newExpense.categorie = "Autre";
-      this.categories.push("Autre")
+    if(isNaN(amount)){
+      return this.invalid = true
     }
     else{
-      newExpense.categorie = categorie;
+      const category = form.value['category'];
+      const date = form.value['date']
+      const newExpense = new Expense();
+      newExpense.amount = amount;
+
+      if (category == ""){
+        newExpense.category = "Autre";
+        this.categories.push("Autre")
+      }
+      else{
+        newExpense.category = category;
+      }
+      newExpense.date = new Date(date);
+      newExpense.userID = Number(this.currentUser.UserID);
+
+      this.expenseService.addExpense(newExpense);
+      this.myChartLine.destroy();
     }
-    newExpense.date = new Date(date);
-    newExpense.userID = Number(this.currentUser.UserID);
-    this.expenseService.addExpense(newExpense);
-    this.myChartLine.destroy();
   }
 
-  onAddCategorie(){
-    this.newCategorie = !this.newCategorie;
+  onAddCategory(){
+    this.newCategory = !this.newCategory;
   }
 
-  onSaveCategorie(form: NgForm){
-    const newCat = form.value['categorie'];
+  onSaveCategory(form: NgForm){
+    const newCat = form.value['category'];
     this.categories.push(newCat);
     form.reset();
   }

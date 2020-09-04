@@ -16,7 +16,7 @@
           <tr *ngFor="let expense of expenses; let i = index">
             <th scope="row">{{i + 1}}</th>
             <td>{{expense.amount}}</td>
-            <td>{{expense.categorie}}</td>
+            <td>{{expense.category}}</td>
             <td>{{expense.date | date: 'dd/MM/y'}}</td>
             <td><button class="btn btn-danger btn-sm" (click)="onRemoveExpense(expense.expenseID)">Supprimer</button></td>
           </tr>
@@ -42,7 +42,7 @@
           <tr *ngFor="let income of incomes; let i = index">
             <th scope="row">{{i+1}}</th>
             <td>{{income.amount}}</td>
-            <td>{{income.categorie}}</td>
+            <td>{{income.category}}</td>
             <td>{{income.date | date: 'dd/MM/y'}}</td>
             <td><button class="btn btn-danger btn-sm" (click)="onRemoveIncome(income.incomeID)">Supprimer</button></td>
           </tr>

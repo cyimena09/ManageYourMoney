@@ -22,12 +22,15 @@ export class IncomeComponent implements OnInit {
   dateDiff;
   average;
   actualDate = Date.now();
-  newCategorie: boolean;
+  newCategory: boolean;
 
   // graph parameter
   canvas:any;
   ctx;
   myChartLine;
+
+  //check form
+  invalid: boolean = false;
 
   constructor(private userService: UserService, private incomeService: IncomeService, private authService: AuthService) { }
 
@@ -38,17 +41,16 @@ export class IncomeComponent implements OnInit {
     this.total = this.incomeService.total;
     this.average = this.incomeService.average;
     this.totalthismonth = this.incomeService.totalthismonth;
+    this.categories = this.incomeService.categories
+
+
 
     this.incomeService.incomeSubject.subscribe(
-      (data) => {this.incomes = data; this.years = this.incomeService.getYears(); this.getDataSets(); this.loadChart();}
-    );
-
-    if(this.currentUser != null){
-      this.incomeService.getCategories().subscribe(
-      (data) => {this.categories = data;}
-    );
-    }
-
+      (data) => {
+        this.incomes = data;
+        this.years = this.incomeService.getYears();
+        this.getDataSets(); this.loadChart();
+      });
 
     this.incomeService.totalSubject.subscribe(
       (data) => {
@@ -67,7 +69,11 @@ export class IncomeComponent implements OnInit {
       });
 
     this.incomeService.totalthismonthSubject.subscribe(
-      (data) => this.totalthismonth = data
+      (data) => {this.totalthismonth = data}
+    );
+
+    this.incomeService.categorySubject.subscribe(
+      (data) => {this.categories = data}
     );
 
    this.authService.userSubject.subscribe(
@@ -85,6 +91,8 @@ export class IncomeComponent implements OnInit {
       this.loadChart()
     }
   }
+
+  //****************************************************--- METHOD ---***************************************************************
 
   onActivated(){
     if(this.activated){
@@ -185,30 +193,38 @@ export class IncomeComponent implements OnInit {
   onAddIncome(form: NgForm){
     let amount = form.value['amount'];
     amount = Number(amount)
-    const categorie = form.value['categorie'];
-    const date = form.value['date']
-    const newIncome = new Income();
-    newIncome.amount = amount;
-
-    if (categorie == ""){
-      newIncome.categorie = "Autre";
-      this.categories.push("Autre")
+    if(isNaN(amount)){
+      return this.invalid = true
     }
     else{
-      newIncome.categorie = categorie;
+      this.invalid = false
+      const category = form.value['category'];
+      const date = form.value['date']
+      const newIncome = new Income();
+      newIncome.amount = amount;
+
+      if (category == ""){
+        newIncome.category = "Autre";
+        this.categories.push("Autre")
+      }
+      else{
+        newIncome.category = category;
+      }
+      newIncome.date = new Date(date);
+      newIncome.userID = Number(this.currentUser.UserID);
+
+      this.incomeService.addIncome(newIncome);
+      this.myChartLine.destroy();
     }
-    newIncome.date = new Date(date);
-    newIncome.userID = Number(this.currentUser.UserID);
-    this.incomeService.addIncome(newIncome);
-    this.myChartLine.destroy();
+
   }
 
-  onAddCategorie(){
-    this.newCategorie = !this.newCategorie;
+  onAddCategory(){
+    this.newCategory = !this.newCategory;
   }
 
- onSaveCategorie(form: NgForm){
-    const newCat = form.value['categorie'];
+ onSaveCategory(form: NgForm){
+    const newCat = form.value['category'];
     this.categories.push(newCat);
     form.reset();
   }

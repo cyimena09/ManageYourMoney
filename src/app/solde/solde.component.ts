@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import Chart from 'chart.js';
-import {SoldeService} from '../services/solde/solde.service';
 import {IncomeService} from '../services/income/income.service';
 import {ExpenseService} from '../services/expense/expense.service';
 import {AuthService} from '../services/auth/auth.service';
@@ -21,7 +20,7 @@ export class SoldeComponent implements OnInit {
   ctx;
   myChartData;
 
-  constructor(private soldeService: SoldeService, private incomeService: IncomeService,
+  constructor( private incomeService: IncomeService,
               private expenseService: ExpenseService, private authService: AuthService,
               private registerService: RegisterService) { }
 

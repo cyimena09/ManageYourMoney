@@ -8,6 +8,7 @@ import {RegisterComponent} from './register/register.component';
 
 const routes: Routes = [
 
+  {path: '', component: SoldeComponent},
   {path: 'managment', component: SoldeComponent},
   {path: 'historic', component: HistoricComponent},
   {path: 'register', component: RegisterComponent},

@@ -14,12 +14,15 @@ export class ExpenseService {
   average;
   dateDiff;
   totalthismonth;
+  categories;
+  categorySubject = new Subject();
   expenseSubject = new Subject();
   totalSubject = new Subject();
   dateDiffSubject = new Subject();
   totalthismonthSubject = new Subject();
 
-  apiURL = 'https://apimanageyourmoney.emile404.be/api/expenses/user/';
+  //apiURL = 'https://apimanageyourmoney.emile404.be/api/expenses/user/';
+  apiURL = 'https://localhost:44390/api/expenses/user/';
 
   constructor(private userService: UserService, private httpClient: HttpClient, private authService: AuthService) {
     this.authService.userSubject.subscribe(
@@ -49,7 +52,7 @@ export class ExpenseService {
   }
 
   getExpensesByCategorie(){
-    return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/expensesbycategorie')
+    return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/expensesbycategory')
   }
 
   getYears(){
@@ -66,7 +69,15 @@ export class ExpenseService {
   }
 
   getCategories(){
-    return this.httpClient.get(this.apiURL + this.currentUser.UserID  + '/categories')
+    return this.httpClient.get(this.apiURL + this.currentUser.UserID  + '/categories').subscribe(
+      (data) => {
+        this.categories = data;
+        if(this.categories.length == 0){
+          this.categories = ['Loisir', 'Loyersss', 'Alimentation']
+        }
+        this.categorySubject.next(this.categories)
+      }
+    )
   }
 
   getTotal(){
