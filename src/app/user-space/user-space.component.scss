@@ -1,0 +1,84 @@
+.container{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 4%;
+}
+
+h4{
+  margin-bottom: 1em;
+}
+
+.data h5{
+  margin-top: 2em;
+}
+
+input{
+  margin-bottom: 1em;
+}
+
+#delete{
+  border-top: solid 2px #980202;
+  padding-top: 0.5em;
+}
+
+.invalid-pwd{
+  white-space: nowrap;
+  color: red;
+  position: absolute;
+  left: 16em;
+  bottom: 15.2em;
+}
+
+.invalid-lenght{
+  white-space: nowrap;
+  color: red;
+  position: absolute;
+  left: 16em;
+  bottom: 11.7em;
+}
+
+.unmatched-pwd{
+  white-space: nowrap;
+  color: red;
+  position: absolute;
+  left: 16em;
+  bottom: 8.5em;
+}
+
+.success{
+  font-weight: bold;
+  position: absolute;
+  white-space: nowrap;
+  color: #1e731e;
+  bottom: 5em;
+  left: 15em;
+}
+
+.invalid-date{
+
+  position: absolute;
+  white-space: nowrap;
+  color: red;
+  top: 10.5em;
+  left: 16em;
+}
+
+img{
+  border-radius: 10px;
+  transition: 0.3s ease-in-out;
+  box-shadow: 0 0 40px #969490;
+  width: 17em;
+  height: 13em;
+}
+
+img:hover{
+    transform: scale(1.04);
+    transition: 0.3s ease-in-out;
+}
+
+.shortcut-managment{
+  margin-top: 2em;
+  margin-bottom: 2em;
+}
+

@@ -4,13 +4,34 @@
   justify-content: space-between;
 }
 
+.user-content{
+   display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 #welcome{
   font-size: 1.2em;
   color: white;
+  margin-right: 2em;
 }
 
 strong{
   margin-left: 10px;
-    font-size: 1.3em;
+  font-size: 1.3em;
+}
 
+.espace{
+  color: white;
+  border-left: white solid 1px;
+  padding-left: 2em;
+}
+
+.profil{
+  font-size: 1.3em;
+  color: white;
+  margin-right: 0.8em;
+}
+
+a{
+  color: white;
 }

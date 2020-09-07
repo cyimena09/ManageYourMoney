@@ -22,6 +22,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { OngletComponent } from './onglet/onglet.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { UserSpaceComponent } from './user-space/user-space.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     LoginComponent,
     RegisterComponent,
     OngletComponent,
+    UserSpaceComponent,
   ],
   imports: [
     BrowserModule,

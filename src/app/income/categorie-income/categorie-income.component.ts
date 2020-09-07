@@ -10,7 +10,7 @@ import {IncomeService} from '../../services/income/income.service';
 export class CategorieIncomeComponent implements OnInit {
   incomes
   categories = []
-  dataForCategorie = [];
+  dataForCategory = [];
 
   canvas
   ctx
@@ -20,22 +20,22 @@ export class CategorieIncomeComponent implements OnInit {
   constructor(private incomeService: IncomeService) {}
 
   ngOnInit(): void {
-    this.incomeService.getIncomesByCategorie().subscribe(
-      (data) => {this.incomes = data; this.getCategorie(); this.getDataForCategorie(); this.loadChart()}
+    this.incomeService.getIncomesByCategory().subscribe(
+      (data) => {this.incomes = data; this.getCategory(); this.getDataForCategory(); this.loadChart()}
     );
   }
 
-  getCategorie(){
+  getCategory(){
     const nbcat = this.incomes.length;
     for(let i = 0; i < nbcat; i++){
-      this.categories.push(this.incomes[i].categorie)
+      this.categories.push(this.incomes[i].category)
     }
   }
 
-  getDataForCategorie(){
+  getDataForCategory(){
     const nbcat = this.incomes.length;
     for(let i = 0; i < nbcat; i++){
-      this.dataForCategorie.push(this.incomes[i].amount)
+      this.dataForCategory.push(this.incomes[i].amount)
     }
   }
 
@@ -50,7 +50,7 @@ export class CategorieIncomeComponent implements OnInit {
   }
 
   loadChart(){
-    this.canvas = document.getElementById("categorieIncomePie")
+    this.canvas = document.getElementById("categoryIncomePie")
     this.ctx = this.canvas.getContext("2d");
 
     const config = {
@@ -58,7 +58,7 @@ export class CategorieIncomeComponent implements OnInit {
       data: {
         labels: this.categories,
         datasets : [{
-          data: this.dataForCategorie,
+          data: this.dataForCategory,
           backgroundColor: this.getRandomColor()
         }]
       },

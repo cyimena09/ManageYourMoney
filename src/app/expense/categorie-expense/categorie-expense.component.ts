@@ -11,32 +11,31 @@ import 'chartjs-plugin-labels';
 export class CategorieExpenseComponent implements OnInit {
   expenses;
   categories = [];
-  dataForCategorie = [];
+  dataForCategory = [];
 
   canvas;
   ctx;
   myChartData;
 
-
   constructor(private expenseService: ExpenseService) {}
 
   ngOnInit(): void {
-    this.expenseService.getExpensesByCategorie().subscribe(
-      (data) => {this.expenses = data; this.getCategorie(); this.getDataForCategorie(); this.loadChart()}
+    this.expenseService.getExpensesByCategory().subscribe(
+      (data) => {this.expenses = data; this.getCategory(); this.getDataForCategory(); this.loadChart()}
     );
   }
 
-  getCategorie(){
+  getCategory(){
     const nbcat = this.expenses.length;
     for(let i = 0; i < nbcat; i++){
-      this.categories.push(this.expenses[i].categorie)
+      this.categories.push(this.expenses[i].category)
     }
   }
 
-  getDataForCategorie(){
+  getDataForCategory(){
     const nbcat = this.expenses.length;
     for(let i = 0; i < nbcat; i++){
-      this.dataForCategorie.push(this.expenses[i].amount)
+      this.dataForCategory.push(this.expenses[i].amount)
     }
   }
 
@@ -51,7 +50,7 @@ export class CategorieExpenseComponent implements OnInit {
   }
 
   loadChart(){
-    this.canvas = document.getElementById("categorieExpensePie")
+    this.canvas = document.getElementById("categoryExpensePie")
     this.ctx = this.canvas.getContext("2d");
 
     const config = {
@@ -59,7 +58,7 @@ export class CategorieExpenseComponent implements OnInit {
       data: {
         labels: this.categories,
         datasets : [{
-          data: this.dataForCategorie,
+          data: this.dataForCategory,
           backgroundColor: this.getRandomColor()
         }]
       },

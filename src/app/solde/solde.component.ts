@@ -4,6 +4,7 @@ import {IncomeService} from '../services/income/income.service';
 import {ExpenseService} from '../services/expense/expense.service';
 import {AuthService} from '../services/auth/auth.service';
 import {RegisterService} from '../services/register/register.service';
+import {OngletService} from '../services/onglet/onglet.service';
 
 
 @Component({
@@ -22,7 +23,8 @@ export class SoldeComponent implements OnInit {
 
   constructor( private incomeService: IncomeService,
               private expenseService: ExpenseService, private authService: AuthService,
-              private registerService: RegisterService) { }
+              private registerService: RegisterService,
+               private ongletService: OngletService) { }
 
   ngOnInit(): void {
     this.registerService.inscriptionSubject.next(false)
@@ -48,7 +50,10 @@ export class SoldeComponent implements OnInit {
     if(typeof this.incomes !== 'undefined' && this.expenses !== 'undefined'  ){
       this.loadData();
     }
+    this.ongletService.ongletSubject.next(false)
   }
+
+ // **************************************************** METHODE *********************************************************
 
   loadData(){
     if(typeof this.myChartData !== 'undefined'){

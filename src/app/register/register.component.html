@@ -1,30 +1,37 @@
 <div class="container  mt-5">
 
   <form *ngIf="!registred" class="col-5 offset-4" (ngSubmit)="onRegistration(f)" #f=ngForm>
-  <h2>Inscription</h2>
-  <div class="form-group">
-    <label for="firstName">Prénom</label>
-    <input type="text" class="form-control" id="firstName" name="firstName" ngModel>
-  </div>
+    <h2>Inscription</h2>
+    <div class="form-group">
+      <label for="firstName">Prénom</label>
+      <input type="text" class="form-control" id="firstName" name="firstName" ngModel required>
+    </div>
 
-  <div class="form-group">
-    <label for="lastName">Nom</label>
-    <input type="text" class="form-control" id="lastName" name="lastName" ngModel>
-  </div>
+    <div class="form-group">
+      <label for="lastName">Nom</label>
+      <input type="text" class="form-control" id="lastName" name="lastName" ngModel required>
+    </div>
 
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input type="email" class="form-control" id="email" name="email" ngModel>
-    <div *ngIf="invalid" class="email-invalid">Cet email n'est pas valide ou a déjà été utilisé !</div>
-  </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" name="email" ngModel required>
+      <div *ngIf="invalidEmail" class="invalid">Cet email n'est pas valide ou a déjà été utilisé !</div>
+    </div>
 
-  <div class="form-group">
-    <label for="password">Mot de passe</label>
-    <input type="password" class="form-control" id="password" name="password" ngModel>
-  </div>
+    <div class="form-group">
+      <label for="password">Mot de passe</label>
+      <input type="password" class="form-control" id="password" name="password" ngModel required>
+      <div *ngIf="invalidLenght" class="invalid">Le mot de passe doit faire au moins 7 caractères !</div>
+    </div>
+
+      <div class="form-group">
+        <label for="password">Confirmer le mot de passe</label>
+        <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" ngModel required>
+        <div *ngIf="unmachtedPassword" class="invalid">Les mots de passes ne correspondent pas !</div>
+    </div>
 
 
-  <button type="submit" class="btn btn-success">Enregistrer</button>
+    <button type="submit" class="btn btn-success" value="Ok" [disabled]="f.invalid">Enregistrer</button>
 </form>
 
   <div *ngIf="registred" class="offset-4">

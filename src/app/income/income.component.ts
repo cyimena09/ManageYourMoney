@@ -17,6 +17,7 @@ export class IncomeComponent implements OnInit {
   incomes;
   years;
   categories: any = [];
+  categoryName
   totalthismonth;
   total;
   dateDiff;
@@ -192,27 +193,34 @@ export class IncomeComponent implements OnInit {
 
   onAddIncome(form: NgForm){
     let amount = form.value['amount'];
-    amount = Number(amount)
+    amount = Number(amount);
+
+
     if(isNaN(amount)){
+      const focusamount = document.getElementById('amount-income')
+      focusamount.style.border = 'red solid'
       return this.invalid = true
     }
     else{
-      this.invalid = false
+      const newIncome = new Income();
       const category = form.value['category'];
       const date = form.value['date']
-      const newIncome = new Income();
-      newIncome.amount = amount;
 
-      if (category == ""){
-        newIncome.category = "Autre";
-        this.categories.push("Autre")
+      if(this.newCategory){
+        newIncome.category = this.categoryName;
       }
       else{
-        newIncome.category = category;
+        if (category == ""){
+          newIncome.category = "Autre";
+          this.categories.push("Autre")
+        }
+        else{
+          newIncome.category = category;
+        }
       }
+      newIncome.amount = amount;
       newIncome.date = new Date(date);
       newIncome.userID = Number(this.currentUser.UserID);
-
       this.incomeService.addIncome(newIncome);
       this.myChartLine.destroy();
     }
@@ -220,13 +228,16 @@ export class IncomeComponent implements OnInit {
   }
 
   onAddCategory(){
-    this.newCategory = !this.newCategory;
+    if(this.newCategory){
+      if(this.categoryName != null){
+        this.categories.push(this.categoryName);
+      }
+      this.newCategory = !this.newCategory;
+    }
+    else{
+      this.newCategory = !this.newCategory;
+    }
   }
 
- onSaveCategory(form: NgForm){
-    const newCat = form.value['category'];
-    this.categories.push(newCat);
-    form.reset();
-  }
 
 }

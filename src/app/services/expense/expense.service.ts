@@ -51,7 +51,7 @@ export class ExpenseService {
     return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/expenses')
   }
 
-  getExpensesByCategorie(){
+  getExpensesByCategory(){
     return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/expensesbycategory')
   }
 
@@ -73,7 +73,7 @@ export class ExpenseService {
       (data) => {
         this.categories = data;
         if(this.categories.length == 0){
-          this.categories = ['Loisir', 'Loyersss', 'Alimentation']
+          this.categories = ['Loisir', 'Loyer', 'Alimentation']
         }
         this.categorySubject.next(this.categories)
       }
@@ -124,7 +124,7 @@ export class ExpenseService {
   }
 
   removeExpense(expenseid){
-    return this.httpClient.delete(this.apiURL + expenseid)
+    return this.httpClient.post(this.apiURL + 'delete', expenseid)
   }
 
 }

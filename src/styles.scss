@@ -1,8 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
-span{
-  color: #343499;
-}
+
 
 .graph_and_button{
   margin-bottom: -10px;
@@ -78,18 +76,16 @@ span{
   padding: 2px 0 2px 10px;
 }
 
-#graph{
-  width: 700px;
-}
 
 
-.fas{
+
+.icon{
   font-size: 20px;
   color: white;
   transition: 0.3s ease-in-out;
 }
 
-.fas:hover{
+.icon:hover{
   color: #3030a0;
   transform: scale(1.1);
   transition: 0.3s ease-in-out;
@@ -99,6 +95,15 @@ span{
   margin-left: 2.3em;
   font-size: 1.05em;
   color: red;
+}
+
+.add{
+  margin-left: -0.5em;
+  margin-right: 1em;
+}
+
+.icon-add{
+  color: white;
 }
 
 

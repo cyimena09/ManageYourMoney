@@ -10,7 +10,11 @@
 
           </div>
 
-          <div *ngIf="currentUser != null" id="welcome">Bienvenue<strong>{{currentUser.FirstName}}</strong></div>
+          <div *ngIf="currentUser != null" class="user-content">
+            <div  id="welcome">Bienvenue<strong>{{currentUser.FirstName}}</strong></div>
+            <div  class="espace"><span class="profil fas fa-user-alt"></span><a routerLink="/user-space">Votre espace</a> </div>
+          </div>
+
           <div>
             <app-login></app-login>
           </div>

@@ -60,7 +60,7 @@ export class IncomeService {
     return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/incomes')
   }
 
-  getIncomesByCategorie(){
+  getIncomesByCategory(){
     return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/incomesbycategory')
   }
 
@@ -82,7 +82,7 @@ export class IncomeService {
       (data) => {
         this.categories = data;
         if(this.categories.length == 0){
-          this.categories = ['Ventes', 'Investissement', 'Salaire']
+          this.categories = ['Vente', 'Investissement', 'Salaire']
         }
         this.categorySubject.next(this.categories)
       }
@@ -132,7 +132,7 @@ export class IncomeService {
   }
 
   removeIncome(incomeid){
-    return this.httpClient.delete(this.apiURL + incomeid, { 'headers': this.headers })
+    return this.httpClient.post(this.apiURL + 'delete', incomeid)
   }
 
 }

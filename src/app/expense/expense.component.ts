@@ -23,6 +23,7 @@ export class ExpenseComponent implements OnInit {
   average;
   actualDate = Date.now();
   newCategory: boolean;
+  categoryName
 
   // graph parameter
   canvas:any;
@@ -190,21 +191,29 @@ export class ExpenseComponent implements OnInit {
     amount = Number(amount);
 
     if(isNaN(amount)){
-      return this.invalid = true
+      const focusamount = document.getElementById('amount-expense');
+      focusamount.style.border = 'red solid'
+      return this.invalid = true;
+
     }
     else{
+      const newExpense = new Expense();
       const category = form.value['category'];
       const date = form.value['date']
-      const newExpense = new Expense();
-      newExpense.amount = amount;
 
-      if (category == ""){
-        newExpense.category = "Autre";
-        this.categories.push("Autre")
+      if(this.newCategory){
+        newExpense.category = this.categoryName;
       }
       else{
-        newExpense.category = category;
+        if (category == ""){
+          newExpense.category = "Autre";
+          this.categories.push("Autre")
+        }
+        else{
+          newExpense.category = category;
+        }
       }
+      newExpense.amount = amount;
       newExpense.date = new Date(date);
       newExpense.userID = Number(this.currentUser.UserID);
 
@@ -214,12 +223,14 @@ export class ExpenseComponent implements OnInit {
   }
 
   onAddCategory(){
-    this.newCategory = !this.newCategory;
-  }
-
-  onSaveCategory(form: NgForm){
-    const newCat = form.value['category'];
-    this.categories.push(newCat);
-    form.reset();
+    if(this.newCategory){
+      if(this.categoryName != null){
+        this.categories.push(this.categoryName);
+      }
+      this.newCategory = !this.newCategory;
+    }
+    else{
+      this.newCategory = !this.newCategory;
+    }
   }
 }

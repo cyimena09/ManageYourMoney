@@ -13,14 +13,14 @@
                ngbTooltip="Dépenses par catégorie"
                [openDelay]="500"
                (click)="onActivated()">
-              <span class="fas fa-chart-pie"></span></a>
+              <span class="icon fas fa-chart-pie"></span></a>
 
             <a *ngIf="!activated" routerLink=""
                placement="right"
                ngbTooltip="Dépenses par mois"
                [openDelay]="500"
                (click)="onActivated()">
-              <span class="fas fa-chart-line"></span></a>
+              <span class="icon fas fa-chart-line"></span></a>
           </div>
 
 
@@ -49,7 +49,7 @@
 
             <div [ngClass]="{'card-body': !activated,
                              'card-body mt-0': activated}">
-              <div  id="graph">
+              <div  id="graph" >
                 <!-- Body linear chart -->
                     <div><canvas id="expenses_graph" width="690" height="180px" ></canvas></div>
                 <!-- End body linear chart -->
@@ -79,41 +79,37 @@
                   <div class="input-group-prepend">
                     <div class="input-group-text">€</div>
                   </div>
-                  <input class="form-control input_main" type="text" placeholder="Montant" id="amount" name="amount" ngModel required>
+                  <input class="form-control input_main" type="text" placeholder="Montant" id="amount-expense" name="amount" ngModel required>
       </div>
 
       <!-- Categories -->
-      <select id="categories" class="form-control category" name="category" ngModel required>
+      <select *ngIf="!newCategory" id="categories" class="form-control category" name="category" ngModel required>
                   <option value="" disabled selected hidden>Catégorie</option>
-                  <option style="background-color: rgb(89,169,255); color: aliceblue" (click)="onAddCategory()">Nouveau</option>
                   <option *ngFor="let cat of categories" >{{cat}}</option>
                 </select>
+      <button *ngIf="!newCategory && currentUser != null" class="add btn btn-success btn-sm" (click)="onAddCategory()"><span class="icon-add fas fa-plus"></span></button>
       <!-- End categories -->
+      <!-- New category -->
+      <input *ngIf="newCategory" class="category form-control input_main" type="text" placeholder="Entrez la catégorie" name="newCat" [(ngModel)]="categoryName" required>
+      <button *ngIf="newCategory && currentUser != null" class="add btn btn-success btn-sm" (click)="onAddCategory()"><span class="icon-add fas fa-check"></span></button>
+<!-- End category -->
+
 
       <!-- Encoding date -->
           <input class="form-control input_main" type="Date" id="date" name="date"  ngModel="{{actualDate | date:'yyyy-MM-dd'}}">
           <button *ngIf="currentUser !== null" class="btn btn-primary" type="submit" [disabled]="f.invalid">Ajouter</button>
 
-      <button *ngIf="currentUser == null" class="btn btn-outline-secondary"
+      <span *ngIf="currentUser == null" placement="bottom"
+        ngbTooltip="Vous devez vous connecter pour ajouter une dépense"><button  class="btn btn-outline-secondary"
         disabled
-        placement="right"
-        ngbTooltip="Vous devez vous connecter pour ajouter une dépense"
-        routerLink="">Ajouter</button>
+        routerLink="">Ajouter</button></span>
     </form>
 <!-- End main form -->
 
 
-<!-- Second form add new category -->
-    <form class="newCat" *ngIf="newCategory" (ngSubmit)="onSaveCategory(g)" #g="ngForm" >
-      <div  class="input-group mb-2 mr-sm-2">
-          <input class="form-control" name="category" type="text" placeholder="Catégorie" ngModel required>
-          <div class="input-group-prepend">
-            <button class="btn btn-success" type="submit" [disabled]="g.invalid">+</button>
-          </div>
-        <button class="btn btn-danger ml-2 btn-sm" (click)="onAddCategory()">Terminer</button>
-      </div>
-    </form>
-<!-- End second form -->
 
 <div *ngIf="invalid" class="invalid-amount">Montant incorrect !</div>
+
+
+
 

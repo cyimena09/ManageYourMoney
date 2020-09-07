@@ -15,25 +15,24 @@ export class AuthService {
   invalid = false;
   invalidSubject = new Subject();
 
-  //logURL = 'https://apimanageyourmoney.emile404.be/api/auth/login';
-  logURL = 'https://localhost:44390/api/auth/login';
+  //apiURL = 'https://apimanageyourmoney.emile404.be/api/auth/';
+  apiURL = 'https://localhost:44390/api/auth/';
 
   constructor(private httpClient: HttpClient, private router: Router) {
-     if (this.tokenString != null){
+    if (this.tokenString != null){
       this.userSubject =  new BehaviorSubject(jwt_decode(this.tokenString))
     }
     else {
       this.userSubject = new BehaviorSubject(null)
     }
-
     this.userSubject.subscribe(
       (data) => {this.currentUser = data}
-    );
+      );
   }
 
   login(logger){
     this.invalidSubject.next(false)
-    this.httpClient.post(this.logURL, logger, {responseType: 'text'}).subscribe(
+    this.httpClient.post(this.apiURL + 'login', logger, {responseType: 'text'}).subscribe(
       (tokenString) => {
         localStorage.setItem('token', tokenString);
         this.userSubject.next(jwt_decode(tokenString));
@@ -50,10 +49,13 @@ export class AuthService {
     this.router.navigate(['/managment']);
   }
 
-  getCurrentUser(){
-    this.userSubject.subscribe(
-      (data) => {this.currentUser = data;
-      }
-    );
+  updateToken(userid){
+    userid = Number(userid);
+    this.httpClient.post(this.apiURL + 'updatetoken', userid, {responseType: 'text'}).subscribe(
+      (tokenString) => {
+        localStorage.removeItem('token');
+        localStorage.setItem('token', tokenString);
+      });
   }
+
 }
