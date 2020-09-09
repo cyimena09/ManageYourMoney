@@ -13,6 +13,7 @@ export class IncomeService {
   dateDiff;
   average;
   totalthismonth;
+  totallastmonth;
   currentUser;
   categories
   categorySubject = new Subject();
@@ -20,6 +21,7 @@ export class IncomeService {
   totalSubject = new Subject();
   dateDiffSubject = new Subject();
   totalthismonthSubject = new Subject();
+  totallastmonthSubject = new Subject();
 
 
   headers = new HttpHeaders()
@@ -28,8 +30,8 @@ export class IncomeService {
     .set('Access-Control-Request-Method', 'DELETE')
 
 
-  //apiURL = 'https://apimanageyourmoney.emile404.be/api/incomes/user/'
-  apiURL = 'https://localhost:44390/api/incomes/user/';
+  apiURL = 'https://apimanageyourmoney.emile404.be/api/incomes/user/'
+  //apiURL = 'https://localhost:44390/api/incomes/user/';
 
 
   constructor(private userService: UserService, private httpClient: HttpClient, private authService: AuthService) {
@@ -53,6 +55,7 @@ export class IncomeService {
         this.getTotal();
         this.getDateDiff();
         this.getTotalThisMonth();
+        this.getTotalLastMonth();
       });
   }
 
@@ -113,7 +116,13 @@ export class IncomeService {
   getTotalThisMonth(){
     return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/totalthismonth').subscribe(
       (data) => {this.totalthismonth = data; this.totalthismonthSubject.next(this.totalthismonth)}
-    )
+    );
+  }
+
+   getTotalLastMonth(){
+    return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/totallastmonth').subscribe(
+      (data) => {this.totallastmonth = data; this.totallastmonthSubject.next(this.totallastmonth)}
+    );
   }
 
   addIncome(newIncome){

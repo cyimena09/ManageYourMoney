@@ -5,7 +5,6 @@ import {Subject} from 'rxjs';
   providedIn: 'root'
 })
 export class OngletService {
-
   hideOnglet: boolean = false;
   ongletSubject = new Subject();
 

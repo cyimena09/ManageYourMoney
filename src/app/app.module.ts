@@ -23,6 +23,9 @@ import { RegisterComponent } from './register/register.component';
 import { OngletComponent } from './onglet/onglet.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserSpaceComponent } from './user-space/user-space.component';
+import { AdminSpaceComponent } from './admin-space/admin-space.component';
+import { UsersListComponent } from './users-list/users-list.component';
+import { AdminCheckUserComponent } from './admin-check-user/admin-check-user.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +42,9 @@ import { UserSpaceComponent } from './user-space/user-space.component';
     RegisterComponent,
     OngletComponent,
     UserSpaceComponent,
+    AdminSpaceComponent,
+    UsersListComponent,
+    AdminCheckUserComponent,
   ],
   imports: [
     BrowserModule,

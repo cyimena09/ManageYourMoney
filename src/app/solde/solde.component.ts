@@ -22,8 +22,8 @@ export class SoldeComponent implements OnInit {
   myChartData;
 
   constructor( private incomeService: IncomeService,
-              private expenseService: ExpenseService, private authService: AuthService,
-              private registerService: RegisterService,
+               private expenseService: ExpenseService, private authService: AuthService,
+               private registerService: RegisterService,
                private ongletService: OngletService) { }
 
   ngOnInit(): void {
@@ -94,7 +94,7 @@ export class SoldeComponent implements OnInit {
       else {
         color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
       }
-      let expensesbymonth = [0,0,0,0,0,0,0,0,0,0,0,0];
+      let expensesbymonth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       let incomesbymonth = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
       for(let j = 0; j < nbexpenseamount; j++){
         if(this.expenses[j].year == this.years[i]){
@@ -112,7 +112,7 @@ export class SoldeComponent implements OnInit {
 
       for(let i =0;i<12;i++){
         incomesbymonth[i] = incomesbymonth[i] - expensesbymonth[i] + actualsolde
-        actualsolde = incomesbymonth[i]
+        actualsolde = Math.round((incomesbymonth[i]*100))/100
       }
 
       if(i + 1 == nbyears){

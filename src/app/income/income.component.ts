@@ -19,10 +19,13 @@ export class IncomeComponent implements OnInit {
   categories: any = [];
   categoryName
   totalthismonth;
+  totallastmonth
+  difference
   total;
   dateDiff;
   average;
   actualDate = Date.now();
+  lastDate = this.getLastMonth();
   newCategory: boolean;
 
   // graph parameter
@@ -42,8 +45,9 @@ export class IncomeComponent implements OnInit {
     this.total = this.incomeService.total;
     this.average = this.incomeService.average;
     this.totalthismonth = this.incomeService.totalthismonth;
-    this.categories = this.incomeService.categories
-
+    this.totallastmonth = this.incomeService.totallastmonth;
+    this.categories = this.incomeService.categories;
+    this.difference = Math.round((((this.totalthismonth - this.totallastmonth) / this.totallastmonth) * 100)*100)/100 ;
 
 
     this.incomeService.incomeSubject.subscribe(
@@ -70,7 +74,11 @@ export class IncomeComponent implements OnInit {
       });
 
     this.incomeService.totalthismonthSubject.subscribe(
-      (data) => {this.totalthismonth = data}
+      (data) => {this.totalthismonth = data; this.difference =  this.getdifference();}
+    );
+
+     this.incomeService.totallastmonthSubject.subscribe(
+      (data) => {this.totallastmonth = data; this.difference = this.getdifference();}
     );
 
     this.incomeService.categorySubject.subscribe(
@@ -94,6 +102,22 @@ export class IncomeComponent implements OnInit {
   }
 
   //****************************************************--- METHOD ---***************************************************************
+
+  getLastMonth(){
+    const table = ['janvier', 'février', 'mars', 'avril','mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
+    const date = new Date().getMonth()
+    return table[date - 1]
+  }
+
+  getdifference(){
+    if(this.totallastmonth == 0){
+      return 0
+    }
+    else{
+      return Math.round((((this.totalthismonth - this.totallastmonth) / this.totallastmonth) * 100)*100)/100 ;
+    }
+  }
+
 
   onActivated(){
     if(this.activated){
@@ -192,6 +216,7 @@ export class IncomeComponent implements OnInit {
   }
 
   onAddIncome(form: NgForm){
+    this.invalid = false;
     let amount = form.value['amount'];
     amount = Number(amount);
 

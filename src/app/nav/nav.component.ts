@@ -8,7 +8,8 @@ import {AuthService} from '../services/auth/auth.service';
 })
 export class NavComponent implements OnInit {
 
-  currentUser
+  currentUser;
+
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {

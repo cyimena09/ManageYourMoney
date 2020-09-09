@@ -14,15 +14,17 @@ export class ExpenseService {
   average;
   dateDiff;
   totalthismonth;
+  totallastmonth;
   categories;
   categorySubject = new Subject();
   expenseSubject = new Subject();
   totalSubject = new Subject();
   dateDiffSubject = new Subject();
   totalthismonthSubject = new Subject();
+  totallastmonthSubject = new Subject();
 
-  //apiURL = 'https://apimanageyourmoney.emile404.be/api/expenses/user/';
-  apiURL = 'https://localhost:44390/api/expenses/user/';
+  apiURL = 'https://apimanageyourmoney.emile404.be/api/expenses/user/';
+  //apiURL = 'https://localhost:44390/api/expenses/user/';
 
   constructor(private userService: UserService, private httpClient: HttpClient, private authService: AuthService) {
     this.authService.userSubject.subscribe(
@@ -44,6 +46,7 @@ export class ExpenseService {
         this.getTotal();
         this.getDateDiff();
         this.getTotalThisMonth();
+        this.getTotalLastMonth();
       });
   }
 
@@ -104,6 +107,12 @@ export class ExpenseService {
   getTotalThisMonth(){
     return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/totalthismonth').subscribe(
       (data) => {this.totalthismonth = data; this.totalthismonthSubject.next(this.totalthismonth)}
+    );
+  }
+
+  getTotalLastMonth(){
+    return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/totallastmonth').subscribe(
+      (data) => {this.totallastmonth = data; this.totallastmonthSubject.next(this.totallastmonth);}
     );
   }
 

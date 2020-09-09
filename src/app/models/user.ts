@@ -5,6 +5,7 @@ export class User{
   BirthDate
   Email
   Password
+  Registration
   Role
 
 

@@ -6,44 +6,47 @@
           <!-- Banner card-->
           <div class="banner card-header">
 
-          <div class="title">
-            <div >Dépenses </div>
-            <a *ngIf="activated" routerLink=""
-               placement="right"
-               ngbTooltip="Dépenses par catégorie"
-               [openDelay]="500"
-               (click)="onActivated()">
-              <span class="icon fas fa-chart-pie"></span></a>
-
-            <a *ngIf="!activated" routerLink=""
-               placement="right"
-               ngbTooltip="Dépenses par mois"
-               [openDelay]="500"
-               (click)="onActivated()">
-              <span class="icon fas fa-chart-line"></span></a>
-          </div>
-
-
+            <div class="title">
+              <div >Dépenses</div>
+              <a *ngIf="activated" routerLink=""
+                 placement="right"
+                 ngbTooltip="Dépenses par catégorie"
+                 [openDelay]="500"
+                 (click)="onActivated()">
+                <span class="icon fas fa-chart-pie"></span></a>
+              <a *ngIf="!activated" routerLink=""
+                 placement="right"
+                 ngbTooltip="Dépenses par mois"
+                 [openDelay]="500"
+                 (click)="onActivated()">
+                <span class="icon fas fa-chart-line"></span></a>
+            </div>
           </div>
           <!-- End banner card-->
 
-          <!-- Body Card -->
-          <div class="info">
-                <div class="date">{{actualDate |date: 'MMMM yyyy'}} : </div>
+            <div class="infos">
 
+              <!-- Body Card -->
+              <div class="info">
+                <div class="date">{{actualDate |date: 'MMMM yyyy'}} : </div>
                 <div >
                   <strong  *ngIf="this.totalthismonth != null"  >{{totalthismonth}} €</strong>
                   <strong *ngIf="this.totalthismonth == null"  >0 €</strong>
                 </div>
-          </div>
+              </div>
+              <div class="difference">
+                <div *ngIf="difference > 0" class="difference-negatif"><strong>{{difference}} % </strong> par rapport à {{lastDate}}</div>
+                <div *ngIf="difference < 0" class="difference-positif"><strong>{{difference}} % </strong> par rapport à {{lastDate}}</div>
+              </div>
 
-          <div class="average">Moyenne (mois) :
-            <div>
-              <strong  *ngIf="this.average != null" class="number" >{{average}} € </strong>
-              <strong  *ngIf="this.average == null" class="number" >0 € </strong>
+
+              <div class="average">Moyenne (mois) :
+                <div>
+                  <strong  *ngIf="this.average != null" class="number" >{{average}} € </strong>
+                  <strong  *ngIf="this.average == null" class="number" >0 € </strong>
+                </div>
+              </div>
             </div>
-
-          </div>
 
 
 
@@ -67,8 +70,8 @@
 <!-- End container -->
 
 <!-- Footer card -->
-          <div class="card-footer bg-danger">
-            <p class="footer" id="total">TOTAL : <strong *ngIf="total != null">{{total}} €</strong>  <strong *ngIf="total == null">0 €</strong></p>
+          <div class="total">
+            <p>TOTAL : <strong *ngIf="total != null">{{total}} €</strong>  <strong *ngIf="total == null">0 €</strong></p>
           </div>
           <!-- End footer card -->
 

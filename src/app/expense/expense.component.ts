@@ -18,10 +18,13 @@ export class ExpenseComponent implements OnInit {
   years;
   categories:any = [];
   totalthismonth;
+  totallastmonth;
+  difference;
   total;
   dateDiff;
   average;
   actualDate = Date.now();
+  lastDate = this.getLastMonth();
   newCategory: boolean;
   categoryName
 
@@ -34,8 +37,9 @@ export class ExpenseComponent implements OnInit {
 
   constructor(private userService: UserService, private expenseService: ExpenseService, private authService: AuthService) { }
 
-  ngOnInit(): void {
 
+
+  ngOnInit(): void {
     this.currentUser = this.authService.currentUser
     this.canvas = document.getElementById("expenses_graph");
     this.expenses = this.expenseService.expenses;
@@ -43,8 +47,9 @@ export class ExpenseComponent implements OnInit {
     this.dateDiff = this.expenseService.dateDiff;
     this.average = this.expenseService.average;
     this.totalthismonth = this.expenseService.totalthismonth;
+    this.totallastmonth = this.expenseService.totallastmonth;
     this.categories = this.expenseService.categories
-
+    this.difference = this.difference = Math.round((((this.totalthismonth - this.totallastmonth) / this.totallastmonth) * 100)*100)/100 ;
 
 
     this.expenseService.expenseSubject.subscribe(
@@ -72,7 +77,11 @@ export class ExpenseComponent implements OnInit {
       });
 
     this.expenseService.totalthismonthSubject.subscribe(
-      (data) => {this.totalthismonth = data}
+      (data) => {this.totalthismonth = data; this.difference =  this.getdifference();}
+    );
+
+    this.expenseService.totallastmonthSubject.subscribe(
+      (data) => {this.totallastmonth = data; this.difference = this.getdifference();}
     );
 
     this.expenseService.categorySubject.subscribe(
@@ -97,6 +106,21 @@ export class ExpenseComponent implements OnInit {
 
 
   //****************************************************--- METHOD ---***************************************************************
+
+  getLastMonth(){
+    const table = ['janvier', 'février', 'mars', 'avril','mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
+    const date = new Date().getMonth()
+    return table[date - 1]
+  }
+
+  getdifference(){
+    if(this.totallastmonth == 0){
+      return 0
+    }
+    else{
+      return Math.round((((this.totalthismonth - this.totallastmonth) / this.totallastmonth) * 100)*100)/100 ;
+    }
+  }
 
   onActivated(){
     if(this.activated){
@@ -187,6 +211,7 @@ export class ExpenseComponent implements OnInit {
   }
 
   onAddExpense(form: NgForm){
+    this.invalid = false;
     let amount = form.value['amount'];
     amount = Number(amount);
 

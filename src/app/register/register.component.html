@@ -19,19 +19,19 @@
     </div>
 
     <div class="form-group">
-      <label for="password">Mot de passe</label>
-      <input type="password" class="form-control" id="password" name="password" ngModel required>
+      <label for="register-password">Mot de passe</label>
+      <input type="password" class="form-control" id="register-password" name="password" ngModel required>
       <div *ngIf="invalidLenght" class="invalid">Le mot de passe doit faire au moins 7 caractères !</div>
     </div>
 
       <div class="form-group">
-        <label for="password">Confirmer le mot de passe</label>
+        <label for="confirmpassword">Confirmer le mot de passe</label>
         <input type="password" class="form-control" id="confirmpassword" name="confirmpassword" ngModel required>
         <div *ngIf="unmachtedPassword" class="invalid">Les mots de passes ne correspondent pas !</div>
     </div>
 
 
-    <button type="submit" class="btn btn-success" value="Ok" [disabled]="f.invalid">Enregistrer</button>
+    <button type="submit" class="btn btn-success" value="Ok" >Enregistrer</button>
 </form>
 
   <div *ngIf="registred" class="offset-4">

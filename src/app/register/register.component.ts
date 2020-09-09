@@ -3,6 +3,7 @@ import {NgForm} from '@angular/forms';
 import {User} from '../models/user';
 import {UserService} from '../services/user/user.service';
 import {OngletService} from '../services/onglet/onglet.service';
+import {formatDate} from '@angular/common';
 
 @Component({
   selector: 'app-register',
@@ -32,13 +33,13 @@ export class RegisterComponent implements OnInit {
     const password = form.value['password'];
     const confirmpassword = form.value['confirmpassword'];
     if(password.length < 7){
-      const focuspassword = document.getElementById("password");
+      const focuspassword = document.getElementById("register-password");
       focuspassword.style.border = 'solid red'
       focuspassword.focus();
       return  this.invalidLenght = true;
     }
     if(password != confirmpassword){
-      const focuspassword = document.getElementById("password");
+      const focuspassword = document.getElementById("register-password");
       focuspassword.style.border = 'solid red'
       const focusconfirmpassword = document.getElementById("confirmpassword")
       focusconfirmpassword.style.border = 'solid red'
@@ -50,6 +51,8 @@ export class RegisterComponent implements OnInit {
     newUser.LastName = lastName;
     newUser.Email = email;
     newUser.Password = password;
+    newUser.Registration = new Date();
+
     this.userService.createUser(newUser).subscribe(
       () => {this.ongletService.ongletSubject.next(false); this.registred = true},
       () => {this.invalidEmail = true}

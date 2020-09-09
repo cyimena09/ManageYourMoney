@@ -1,12 +1,23 @@
 
-.date{
-  text-transform: capitalize;
-}
 
+ @import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@500;600&display=swap');
 strong{
   color: #620c0c;
 }
 
-#graph{
-
+.total{
+  margin-top: 2em;
+  border-top: red 3px solid;
 }
+
+.difference{
+  font-size: 1.1em;
+  position: absolute;
+  left: 24em;
+  top: 4em;
+}
+
+.difference-positif strong{
+  color: #183408;
+}
+

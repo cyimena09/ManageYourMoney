@@ -15,8 +15,8 @@ export class AuthService {
   invalid = false;
   invalidSubject = new Subject();
 
-  //apiURL = 'https://apimanageyourmoney.emile404.be/api/auth/';
-  apiURL = 'https://localhost:44390/api/auth/';
+  apiURL = 'https://apimanageyourmoney.emile404.be/api/auth/';
+  //apiURL = 'https://localhost:44390/api/auth/';
 
   constructor(private httpClient: HttpClient, private router: Router) {
     if (this.tokenString != null){
