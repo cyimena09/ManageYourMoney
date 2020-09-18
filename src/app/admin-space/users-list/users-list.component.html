@@ -1,0 +1,47 @@
+<div class="container col-lg-6 col-sm-12">
+
+  <h4>Liste des utilisateurs</h4>
+
+  <div class="table-responsive">
+
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Prénom</th>
+        <th scope="col">Nom</th>
+        <th scope="col">Inscription</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+      </thead>
+
+      <tbody *ngIf="currentUser.Role == 1">
+      <tr *ngFor="let user of users; let i = index">
+        <th scope="row">{{i + 1}}</th>
+        <td>{{user.firstName}}</td>
+        <td>{{user.lastName}}</td>
+        <td>{{user.registration | date}}</td>
+        <td><button class="btn btn-warning" routerLink="user-detail/{{user.userID}}" [disabled]="user.role == 1">Modifier</button></td>
+        <td><button class="btn btn-danger" [disabled]="user.role == 1">Bloquer</button></td>
+      </tr>
+      </tbody>
+
+      <tbody *ngIf="currentUser.Role == 2">
+      <tr *ngFor="let user of users; let i = index">
+        <th scope="row">{{i + 1}}</th>
+        <td>{{user.firstName}}</td>
+        <td>{{user.lastName}}</td>
+        <td>{{user.registration | date}}</td>
+        <td><button class="btn btn-warning" routerLink="user-detail/{{user.userID}}" [disabled]="user.role == 1">Modifier</button></td>
+        <td><button class="btn btn-danger" [disabled]="user.role == 1">Bloquer</button></td>
+      </tr>
+      </tbody>
+
+
+
+    </table>
+  </div>
+</div>
+
+<router-outlet></router-outlet>

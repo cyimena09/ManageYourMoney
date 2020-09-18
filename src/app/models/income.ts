@@ -3,5 +3,6 @@ export class Income{
   amount: number;
   category: string;
   date: Date
+  comment: string;
   userID: number
 }

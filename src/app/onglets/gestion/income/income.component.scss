@@ -1,0 +1,62 @@
+
+form{
+  display: flex;
+  flex-direction: row;
+}
+
+.input-category, .input-amount, .input-date{
+  display: flex;
+  flex-direction: row;
+  margin-right: 1%;
+  width: 33%;
+  white-space: nowrap;
+}
+
+.category{
+  max-width: 85.5%;
+}
+
+.total{
+  margin-top: 2em;
+  border-top: green 3px solid;
+}
+
+strong{
+  color: #104710;
+}
+
+.invalid-amount{
+  color: red;
+}
+
+.difference{
+  font-size: 1.1em;
+  position: absolute;
+  left: 24em;
+  top: 4em;
+}
+
+.difference-positif strong{
+  color: #183408;
+}
+
+.difference-negatif strong{
+  color: #620c0c;
+}
+
+
+@media(max-width:767px){
+
+  .difference{
+    top: 6.5em;
+    left: 1em;
+  }
+
+  form{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10%;
+  }
+
+
+}

@@ -5,6 +5,10 @@
   margin-top: 4%;
 }
 
+form{
+  max-width: 17em;
+}
+
 h4{
   margin-bottom: 1em;
 }
@@ -14,7 +18,7 @@ h4{
 }
 
 input{
-  margin-bottom: 1em;
+  margin-top: 1em;
 }
 
 #delete{
@@ -22,46 +26,51 @@ input{
   padding-top: 0.5em;
 }
 
-.invalid-pwd{
+.invalid-firstName{
+  margin-left: 5px;
   white-space: nowrap;
   color: red;
-  position: absolute;
-  left: 16em;
-  bottom: 15.2em;
+
+}
+
+.invalid-lastName{
+  margin-left: 5px;
+  white-space: nowrap;
+  color: red;
+
+}
+
+.invalid-date{
+  margin-left: 5px;
+  white-space: nowrap;
+  color: red;
+}
+
+.invalid-pwd{
+  margin-left: 5px;
+  white-space: nowrap;
+  color: red;
 }
 
 .invalid-lenght{
+  margin-left: 5px;
   white-space: nowrap;
   color: red;
-  position: absolute;
-  left: 16em;
-  bottom: 11.7em;
+  position: relative;
+
 }
 
 .unmatched-pwd{
+  margin-left: 5px;
   white-space: nowrap;
   color: red;
-  position: absolute;
-  left: 16em;
-  bottom: 8.5em;
+
 }
 
 .success{
   font-weight: bold;
-  position: absolute;
   white-space: nowrap;
   color: #1e731e;
-  bottom: 5em;
-  left: 15em;
-}
-
-.invalid-date{
-
-  position: absolute;
-  white-space: nowrap;
-  color: red;
-  top: 10.5em;
-  left: 16em;
 }
 
 img{
@@ -76,9 +85,23 @@ img:hover{
     transform: scale(1.04);
     transition: 0.3s ease-in-out;
 }
-
-.shortcut-managment{
-  margin-top: 2em;
+.shortcut{
   margin-bottom: 2em;
 }
 
+.shortcut-managment{
+  margin-top: 2em;
+}
+
+//for mobile
+@media(max-width:767px){
+
+  .container{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .shortcuts{
+    margin-top: 15%;
+  }
+}

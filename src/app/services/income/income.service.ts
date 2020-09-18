@@ -8,6 +8,9 @@ import {AuthService} from '../auth/auth.service';
   providedIn: 'root'
 })
 export class IncomeService {
+  incomesList
+  incomeListSubject = new Subject();
+
   incomes;
   total;
   dateDiff;
@@ -23,7 +26,6 @@ export class IncomeService {
   totalthismonthSubject = new Subject();
   totallastmonthSubject = new Subject();
 
-
   headers = new HttpHeaders()
     .set('content-type', 'application/json')
     .set("Access-Control-Allow-Origin", "*")
@@ -37,12 +39,10 @@ export class IncomeService {
   constructor(private userService: UserService, private httpClient: HttpClient, private authService: AuthService) {
     this.authService.userSubject.subscribe(
       (data) => { this.currentUser = data;
-        if(this.currentUser != null){
-          this.loadIncomes();
-        }
+      if(this.currentUser != null){
+        this.loadIncomes();
       }
-    );
-
+      });
   }
 
   loadIncomes(){
@@ -50,6 +50,7 @@ export class IncomeService {
       (data) => {
         this.incomes = data;
         this.incomeSubject.next(this.incomes);
+        this.getIncomesList()
         this.getYears();
         this.getCategories();
         this.getTotal();
@@ -59,9 +60,12 @@ export class IncomeService {
       });
   }
 
-  getIncomesList(){
-    return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/incomes')
+    getIncomesList(){
+    return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/incomes').subscribe(
+      (data) => {this.incomesList = data; this.incomeListSubject.next(this.incomesList)}
+    )
   }
+
 
   getIncomesByCategory(){
     return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/incomesbycategory')
@@ -143,5 +147,10 @@ export class IncomeService {
   removeIncome(incomeid){
     return this.httpClient.post(this.apiURL + 'delete', incomeid)
   }
+
+   updateIncome(income){
+    return this.httpClient.post(this.apiURL + 'update', income)
+  }
+
 
 }

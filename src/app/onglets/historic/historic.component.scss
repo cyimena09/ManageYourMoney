@@ -1,0 +1,46 @@
+.content{
+  display: flex;
+  flex-direction: row;
+  margin-top: 50px;
+
+}
+.table-expense{
+  width: 50%;
+  margin-right: 25px;
+}
+
+.table-income{
+  width: 50%;
+  margin-left: 25px;
+}
+
+h4{
+  font-family: 'Oswald', sans-serif;
+}
+
+tr input{
+  font-size: 0.9em;
+}
+
+
+.button{
+  display: flex;
+  flex-direction: row;
+}
+
+button{
+  width: 32px;
+  height: 32px;
+}
+
+button:first-child{
+  margin-right: 1em;
+}
+
+.edit-icon, .delete-icon{
+  color: #1a1919;
+}
+
+.container{
+  padding: 0;
+}

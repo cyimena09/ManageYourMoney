@@ -1,0 +1,15 @@
+.content{
+  border: solid;
+  width: 48em;
+}
+
+
+.pie{
+  border: red solid;
+}
+
+.list-group-item{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}

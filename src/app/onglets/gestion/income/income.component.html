@@ -1,0 +1,99 @@
+<!-- ************************************** START CARD ********************************************************** -->
+  <div class="graph_and_button" style="min-height: 310px ; max-height: 310px">
+
+        <div class="card text-white bg-success" style="width: 100%">
+
+          <!-- TITLE -->
+          <div class="banner card-header">
+            <div class="title">
+              <div>Revenus</div>
+            </div>
+          </div>
+          <!-- END TITLE-->
+
+          <!-- BODY  -->
+          <div class="info">
+            <div class="date">{{actualDate |date: 'MMMM yyyy'}} : </div>
+            <div >
+              <strong  *ngIf="this.totalthismonth != null">{{totalthismonth}} €</strong>
+              <strong *ngIf="this.totalthismonth == null">0 €</strong>
+            </div>
+          </div>
+
+          <div class="difference">
+            <div *ngIf="difference > 0" class="difference-positif"><strong>{{difference}} % </strong> par rapport à {{lastDate}}</div>
+            <div *ngIf="difference < 0" class="difference-negatif"><strong>{{difference}} % </strong> par rapport à {{lastDate}}</div>
+          </div>
+
+          <div class="average">Moyenne (mois) :
+            <div>
+              <strong  *ngIf="this.average != null" class="number" >{{average}} € </strong>
+              <strong  *ngIf="this.average == null" class="number" >0 € </strong>
+            </div>
+          </div>
+
+
+          <!-- LINEAR CHART -->
+            <div>
+              <div  id="graph">
+                <div><canvas id="incomes_graph" width="690" height="180px"></canvas></div>
+
+              </div>
+            </div>
+          <!-- END LINEAR CHART -->
+        </div>
+    </div>
+    <!-- ************************************** END CARD ********************************************************** -->
+
+
+    <!-- TOTAL  -->
+    <div class="total">
+      <p>TOTAL : <strong *ngIf="total != null">{{total}} €</strong>  <strong *ngIf="total == null">0 €</strong></p>
+    </div>
+    <!-- END TOTAL -->
+
+
+
+
+<!-- ********************************************  FORM  ********************************************************** -->
+
+  <form (ngSubmit)="onAddIncome(f)" #f="ngForm">
+
+    <!-- Amount -->
+     <div class="input-amount input-group">
+       <div class="input-group-prepend">
+         <div class="input-group-text">€</div>
+       </div>
+       <input class="form-control input_main" type="text" placeholder="Montant" id="amount-income" name="amount" ngModel required>
+     </div>
+
+
+   <!-- CATEGORY -->
+    <div class="input-category">
+      <!-- CATEGORY LIST -->
+      <select *ngIf="!newCategory" class="form-control" name="category" ngModel required>
+       <option value="" disabled selected hidden>Catégorie</option>
+       <option *ngFor="let cat of categories" >{{cat}}</option>
+      </select>
+      <button *ngIf="!newCategory && currentUser != null" class="btn btn-success btn-sm" (click)="onAddCategory()"><span class="icon-add fas fa-plus"></span></button>
+
+      <!-- NEW CATEGORY -->
+      <input *ngIf="newCategory" class="category form-control" type="text" placeholder="Entrez la catégorie" name="newCat" [(ngModel)]="categoryName" required>
+      <button *ngIf="newCategory && currentUser != null" class="btn btn-success btn-sm" (click)="onAddCategory()"><span class="icon-add fas fa-check"></span></button>
+    </div>
+
+   <!-- DATE  -->
+     <input class="input-date form-control " type="Date" id="date" name="date"  ngModel="{{actualDate | date:'yyyy-MM-dd'}}">
+     <button *ngIf="currentUser !== null" class="btn btn-primary" type="submit" [disabled]="f.invalid">Ajouter</button>
+
+    <!-- SUBMIT FORM -->
+    <span *ngIf="currentUser == null" class="submit" placement="bottom"
+        ngbTooltip="Vous devez vous connecter pour ajouter un revenu"><button  class="btn btn-outline-secondary"
+        disabled
+        routerLink="">Ajouter</button></span>
+
+  </form>
+<!-- ******************************************** END FORM  ******************************************************** -->
+
+
+<div *ngIf="invalid" class="invalid-amount">Montant incorrect !</div>

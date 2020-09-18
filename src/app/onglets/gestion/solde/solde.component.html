@@ -1,0 +1,30 @@
+<div class="container-fluid">
+<!-- Graph balance -->
+    <div class="card text-white bg-warning mb-3 mt-4">
+      <div class="graph_and_button card-header">Évolution du solde</div>
+      <div class="card-body">
+        <div >
+            <canvas id="solde_graph" height="35px" ></canvas>
+        </div>
+      </div>
+    </div>
+  <div class="total">
+            <p>SOLDE : <strong *ngIf="totalsolde != null">{{totalsolde}} €</strong>  <strong *ngIf="totalsolde == null">0 €</strong></p>
+          </div>
+<!-- End Graph -->
+
+
+<!-- Expense and Income component -->
+    <div class="row">
+        <div class="col-lg-6">
+          <app-expense></app-expense>
+        </div>
+
+        <div class="col-lg-6">
+          <app-income></app-income>
+        </div>
+    </div>
+<!-- End Expense and Income component -->
+</div>
+
+<router-outlet></router-outlet>

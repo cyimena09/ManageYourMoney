@@ -8,6 +8,9 @@ import {AuthService} from '../auth/auth.service';
   providedIn: 'root'
 })
 export class ExpenseService {
+  expensesList
+  expenseListSubject = new Subject();
+
   currentUser;
   expenses;
   total;
@@ -31,9 +34,11 @@ export class ExpenseService {
       (data) => { this.currentUser = data;
         if(this.currentUser != null){
           this.loadExpenses();
+
         }
       }
     );
+
   }
 
   loadExpenses(){
@@ -41,6 +46,7 @@ export class ExpenseService {
       (data) => {
         this.expenses = data;
         this.expenseSubject.next(this.expenses);
+        this.getExpensesList();
         this.getYears();
         this.getCategories();
         this.getTotal();
@@ -51,7 +57,9 @@ export class ExpenseService {
   }
 
   getExpensesList(){
-    return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/expenses')
+    return this.httpClient.get(this.apiURL + this.currentUser.UserID + '/expenses').subscribe(
+      (data) => {this.expensesList = data; this.expenseListSubject.next(this.expensesList)}
+    )
   }
 
   getExpensesByCategory(){
@@ -80,7 +88,7 @@ export class ExpenseService {
         }
         this.categorySubject.next(this.categories)
       }
-    )
+    );
   }
 
   getTotal(){
@@ -130,6 +138,10 @@ export class ExpenseService {
           this.totalthismonthSubject.next(this.totalthismonth)
         }
       });
+  }
+
+  updateExpense(expense){
+    return this.httpClient.post(this.apiURL + 'update', expense)
   }
 
   removeExpense(expenseid){

@@ -1,0 +1,36 @@
+<div class="side-form">
+
+  <h2>Utilisateur</h2>
+
+  <div class="data">
+    <ul>
+      <li>Prénom</li>
+      <li>Nom</li>
+      <li>Date de naissance</li>
+      <li>Email</li>
+      <li>Date d'inscription</li>
+    </ul>
+
+    <ul>
+      <li>{{user.firstName}}</li>
+      <li>{{user.lastName}}</li>
+      <li>{{user.birthDate | date}}</li>
+      <li>{{user.email}}</li>
+      <li>{{user.registration | date}}</li>
+    </ul>
+  </div>
+
+  <div><button class="btn btn-success mb-3" (click)="onUpdateUser()" [disabled]="loading">
+    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+    Définir comme admin</button></div>
+
+  <div><button class="btn btn-outline-dark" routerLink="/users-list">Retour</button></div>
+
+
+
+
+
+
+</div>
+
+

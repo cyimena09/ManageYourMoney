@@ -15,6 +15,10 @@ export class UserService {
     return this.httpClient.get(this.apiURL)
   }
 
+  getUser(id){
+    return this.httpClient.get(this.apiURL + id)
+  }
+
   createUser(user){
     return this.httpClient.post(this.apiURL, user)
   }

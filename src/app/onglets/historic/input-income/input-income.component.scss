@@ -1,0 +1,44 @@
+.input-list{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+
+
+.input-index{
+  width: 2em;
+  margin-left: 0.5em;
+  font-weight: bold;
+  margin-top: 0.3em;
+}
+
+.input-amount{
+  width: 5em;
+  margin: 0 1em 0 2.2em;
+
+}
+
+.input-category{
+  width: 7.8em;
+  margin: 0 1em 0 0;
+}
+.input-date{
+  width: 7em;
+  margin: 0 1em 0 0;
+}
+
+.input-comment{
+  width: 14.7em;
+  margin: 0 1em 0 0;
+}
+
+.delete{
+  height: 2.2em;
+  width: 2.2em;
+}
+
+.icon{
+  color: #222121;
+}

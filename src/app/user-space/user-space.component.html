@@ -1,45 +1,68 @@
-<div class="container col-8">
+<div class="container">
 
   <div class="data">
 
-  <h4>Vos données</h4>
-  <input class="form-control" type="text"  [(ngModel)]="currentUser.FirstName">
-  <input class="form-control" type="text"  [(ngModel)]="currentUser.LastName">
-  <input class="form-control" type="text"  [(ngModel)]="currentUser.BirthDate ">
-  <div *ngIf="invalidDate" class="invalid-date">La date doit être au format : dd-mm-yyyy</div>
-  <input  class="form-control" type="text"  [(ngModel)]="currentUser.Email" disabled>
+    <h4>Vos données</h4>
+    <form [formGroup]="userForm" (ngSubmit)="onSaveUser()">
+      <input class="form-control" type="text"  formControlName="FirstName">
+      <div *ngIf="uf.FirstName.invalid" class="invalid-firstName">Vous devez indiquer un prénom</div>
+      <input class="form-control" type="text"  formControlName="LastName">
+      <div *ngIf="uf.LastName.invalid" class="invalid-lastName">Vous devez indiquer un nom</div>
+      <input class="form-control" type="text"  formControlName="BirthDate">
+      <div *ngIf="uf.BirthDate.invalid" class="invalid-date">La date doit être au format : dd-mm-yyyy</div>
+      <input class="form-control" type="text"  formControlName="Email" disabled>
 
-  <h5>Changer le mot de passe</h5>
-  <form (ngSubmit)="onChangePassword(f)" #f=ngForm>
-    <input class="form-control" type="password" placeholder="Ancien mot de passe" id="password" name="password" ngModel>
-    <div *ngIf="invalidPwd" class="invalid-pwd">Le mot de passe n'est pas valide !</div>
+      <div><button class="btn btn-success mt-3" [disabled]="userForm.invalid || loadingUser">
+        <span *ngIf="loadingUser" class="spinner-border spinner-border-sm mr-1 "></span>
+        Sauvegarder</button></div>
 
-    <input class="form-control" type="password" placeholder="Nouveau mot de passe" id="newPassword" name="newPassword" ngModel>
-    <div *ngIf="invalidLenght" class="invalid-lenght">Le mot de passe doit avoir minimum 7 caractères !</div>
-    <input class="form-control" type="password" placeholder="Confirmer le mot de passe" id="confirmPassword" name="confirmPassword" ngModel>
-    <div *ngIf="unmatchedPwd" class="unmatched-pwd">Les deux mots de passe ne correspondent pas !</div>
-    <button class="btn btn-success mb-4">Changer de mot de passe</button>
-    <div *ngIf="success" class="success">Le mot de passe à bien été changé !</div>
-  </form>
+      <div *ngIf="savedUser" class="success">Vos données ont été mises à jour !</div>
+    </form>
 
-  <div id="delete"><button  class="btn btn-danger" (click)="onRemoveUser()">Supprimer le compte</button></div>
+    <h5>Changer le mot de passe</h5>
+    <form [formGroup]="passwordForm" (ngSubmit)="onChangePassword()">
+      <input class="form-control" type="password" placeholder="Ancien mot de passe" id="password" formControlName="password">
+      <div *ngIf="invalidPwd" class="invalid-pwd">Le mot de passe n'est pas valide !</div>
+
+      <input class="form-control" type="password" placeholder="Nouveau mot de passe" id="newPassword" formControlName="newPassword">
+      <div *ngIf="pf.newPassword.invalid" class="invalid-lenght">
+        Le mot de passe doit avoir au minimum {{pf.newPassword.errors.minlength.requiredLength}} caractères !
+        {{pf.newPassword.errors.minlength.requiredLength - pf.newPassword.errors.minlength.actualLength}} restant(s).</div>
+
+      <input class="form-control" type="password" placeholder="Confirmer le mot de passe" id="confirmPassword" formControlName="confirmPassword">
+
+      <div *ngIf="pf.newPassword.value != pf.confirmPassword.value && pf.confirmPassword.touched" class="unmatched-pwd">Les deux mots de passe ne correspondent pas !</div>
+
+      <button class="btn btn-success mt-4" [disabled]="passwordForm.invalid || loadingPassword">
+        <span *ngIf="loadingPassword" class="spinner-border spinner-border-sm mr-1"></span>
+        Changer de mot de passe</button>
+
+      <div *ngIf="success" class="success">Le mot de passe à bien été changé !</div>
+    </form>
+
+    <div id="delete" class="mt-4"><button  class="btn btn-danger" (click)="onRemoveUser()" [disabled]="loadingDeleteAccount">
+      <span *ngIf="loadingDeleteAccount" class="spinner-border spinner-border-sm mr-1"></span>
+      Supprimer le compte</button></div>
   </div>
 
+
+  <!-- *********************************  SHORCUTS **************************************************************-->
   <div class="shortcuts">
 
-    <div class="shortcut-managment">
+    <h4>Raccourcis vers</h4>
+
+    <div class="shortcut shortcut-managment">
       <div class="image">
         <a routerLink="/managment"><img src="assets/images/managment.png" alt="Manage Your Money"></a>
       </div>
       <button class="btn btn-outline-dark mt-3" routerLink="/managment">Vers la gestion</button>
     </div>
 
-    <div class="shortcut-historic">
+    <div class="shortcut shortcut-historic">
       <div class="image">
         <a routerLink="/historic"><img src="assets/images/historic.png" alt="Manage Your Money"></a>
       </div>
       <button class="btn btn-outline-dark mt-3" routerLink="/historic">Vers l'historique</button>
     </div>
-
   </div>
 </div>

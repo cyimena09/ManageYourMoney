@@ -17,7 +17,7 @@ export class UserGuardService implements CanActivate{
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):
      boolean  {
-    if(this.currentUser == 0){
+    if(this.currentUser.Role == 0){
       return true;
     }
     else this.router.navigate(['/not_found'])

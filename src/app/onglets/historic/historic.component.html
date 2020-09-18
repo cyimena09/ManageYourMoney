@@ -1,0 +1,55 @@
+<div class="content">
+
+    <div class="table-expense">
+      <h4>Dépenses ajoutées</h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr class="bg-danger">
+            <th scope="col">#</th>
+            <th scope="col" style="width: 6em;">Montant</th>
+            <th scope="col" style="width: 8.5em;">Catégorie</th>
+            <th scope="col" style="width: 8em;">Date</th>
+            <th scope="col">Commentaire</th>
+            <th scope="col" style="width:3em">Action</th>
+          </tr>
+        </thead>
+      </table>
+
+      <div class="container" style="width: 100%">
+         <div *ngFor="let expense of expenses; let i = index">
+           <app-input-expense
+             [index]="i"
+             [expense]="expense"></app-input-expense>
+         </div>
+      </div>
+    </div>
+
+
+  <!-- ************************************************* INCOMES **************************************-->
+
+
+   <div class="table-income">
+      <h4>Dépenses ajoutées</h4>
+      <table class="table table-bordered">
+        <thead>
+          <tr class="bg-success">
+            <th scope="col">#</th>
+            <th scope="col" style="width: 6em;">Montant</th>
+            <th scope="col" style="width: 8.5em;">Catégorie</th>
+            <th scope="col" style="width: 8em;">Date</th>
+            <th scope="col">Commentaire</th>
+            <th scope="col" style="width:3em">Action</th>
+          </tr>
+        </thead>
+      </table>
+
+      <div class="container" style="width: 100%">
+         <div *ngFor="let income of incomes; let i = index">
+           <app-input-income
+             [index]="i"
+             [income]="income"></app-input-income>
+         </div>
+      </div>
+    </div>
+
+</div>

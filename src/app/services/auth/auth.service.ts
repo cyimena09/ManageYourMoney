@@ -13,6 +13,7 @@ export class AuthService {
   tokenString = localStorage.getItem('token');
   userSubject;
   invalid = false;
+  loadingSubject = new Subject();
   invalidSubject = new Subject();
 
   apiURL = 'https://apimanageyourmoney.emile404.be/api/auth/';
@@ -31,15 +32,21 @@ export class AuthService {
   }
 
   login(logger){
+    this.loadingSubject.next(true)
     this.invalidSubject.next(false)
     this.httpClient.post(this.apiURL + 'login', logger, {responseType: 'text'}).subscribe(
       (tokenString) => {
         localStorage.setItem('token', tokenString);
         this.userSubject.next(jwt_decode(tokenString));
         this.router.navigate(['/managment']);
-        this.invalid = false; this.invalidSubject.next(this.invalid);
+        this.invalid = false; this.invalidSubject.next(this.invalid); this.loadingSubject.next(false);
       },
-      () => {this.invalid = true; this.invalidSubject.next(this.invalid)}
+      (error) => {
+        console.log(error.error);
+        this.invalid = true;
+        this.invalidSubject.next(this.invalid);
+        this.loadingSubject.next(false)
+      }
     );
   }
 
@@ -55,6 +62,7 @@ export class AuthService {
       (tokenString) => {
         localStorage.removeItem('token');
         localStorage.setItem('token', tokenString);
+        this.userSubject.next(jwt_decode(tokenString));
       });
   }
 

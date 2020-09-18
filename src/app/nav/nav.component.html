@@ -1,22 +1,30 @@
     <!-- NavBar -->
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Manage Your Money</a>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <nav class="container col-12 navbar navbar-expand-lg navbar-dark bg-dark">
+        <h3>Manage Your Money</h3>
 
-          <div class="navbar-nav">
-            <a class="nav-item nav-link active" routerLink="/managment" >Accueil<span class="sr-only">(current)</span></a>
-          </div>
+        <div class="content" >
 
-          <div *ngIf="currentUser != null" class="user-content">
-            <div  id="welcome">Bienvenue<strong>{{currentUser.FirstName}}</strong></div>
-            <div *ngIf="currentUser != null && currentUser.Role == 0" class="espace"><a routerLink="/user-space">Votre espace</a></div>
-            <div *ngIf="currentUser != null && currentUser.Role == 1" class="espace"><a routerLink="/admin-space">Espace administrateur</a></div>
-          </div>
+            <div class="navbar-nav">
+              <a class="accueil nav-item nav-link active" routerLink="/managment" >Accueil<span class="sr-only">(current)</span></a>
+            </div>
 
-          <div>
-            <app-login></app-login>
-          </div>
+            <div *ngIf="currentUser != null" class="user-content">
+              <div  id="welcome">Bienvenue<strong>{{currentUser.FirstName}}</strong></div>
+              <div *ngIf="currentUser != null && currentUser.Role == 0" class="espace"><a routerLink="/user-space">Votre espace</a></div>
+              <div *ngIf="currentUser != null && currentUser.Role == 1" class="espace"><a routerLink="/admin-space">Espace administrateur</a></div>
+            </div>
+
+            <div *ngIf="currentUser == null" class="connection">
+              <button class="btn btn-success mr-3" routerLink="managment/login">Se connecter</button>
+              <button class="btn btn-secondary" routerLink="managment/register">S'inscrire</button>
+            </div>
+
+            <div *ngIf="currentUser != null">
+              <button class="btn btn-danger btn-sm mt-1" (click)="onLogout()">Déconnexion</button>
+            </div>
 
         </div>
+
       </nav>
     <!-- End Navbar -->
+

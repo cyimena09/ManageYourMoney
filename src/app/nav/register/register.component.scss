@@ -1,0 +1,31 @@
+
+.container{
+  border: solid;
+  border-radius: 15px;
+  background-color: white;
+  z-index: 100;
+}
+
+
+.quit{
+  position: relative;
+  bottom: 2.4em;
+  left: 5em;
+}
+
+
+.quit-registred{
+  position: relative;
+  bottom: 0;
+  left: 18em;
+}
+
+h2{
+  white-space: nowrap;
+}
+
+
+.invalid{
+  margin-left: 5px;
+  color: red;
+}

@@ -1,14 +1,22 @@
 
-#navbarNavAltMarkup{
+.content{
+  width: 100%;
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
 }
 
+h3{
+  white-space: nowrap;
+  color: white;
+}
+
 .user-content{
-   display: flex;
+  display: flex;
   flex-direction: row;
   align-items: center;
 }
+
 #welcome{
   font-size: 1.2em;
   color: white;
@@ -24,6 +32,7 @@ strong{
   color: white;
   border-left: white solid 1px;
   padding-left: 2em;
+  white-space: nowrap;
 }
 
 .profil{
@@ -34,4 +43,44 @@ strong{
 
 a{
   color: white;
+}
+
+
+@media(max-width:767px){
+
+  nav{
+    max-width: 767px;
+  }
+
+  .accueil{
+    display: none;
+  }
+
+  .connection{
+    display: none;
+  }
+
+  #volet{
+    position: relative;
+    left: 35px;
+    -webkit-transition: all .5s ease-in;
+	transition: all .5s ease-in;
+  }
+
+  #volet:target{
+    left: 0;
+  }
+
+  span{
+    cursor: pointer;
+    margin-top: 7px;
+    font-size: 2em;
+    color: white;
+  }
+
+  .user-content{
+    display: flex;
+    flex-direction: column;
+  }
+
 }
